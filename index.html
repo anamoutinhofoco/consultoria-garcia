@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultoria Estratégica de Tráfego — Garcia Medical Group</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0d0d;
+    --ink-2: #3a3a3a;
+    --ink-3: #6b6b6b;
+    --ink-4: #9b9b9b;
+    --surface: #ffffff;
+    --surface-1: #f7f6f3;
+    --surface-2: #f0eee9;
+    --border: rgba(13,13,13,0.10);
+    --border-strong: rgba(13,13,13,0.18);
+    --accent: #1a56a0;
+    --accent-light: #e8f0fb;
+    --red: #c0392b;
+    --red-light: #fdf0ee;
+    --amber: #9a5700;
+    --amber-light: #fef5e7;
+    --green: #1a6b4a;
+    --green-light: #e8f5ee;
+    --purple: #4a3a9a;
+    --purple-light: #f0eefb;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--surface-1);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ink);
+    color: #fff;
+    padding: 64px 48px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: rgba(26,86,160,0.18);
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 18px;
+  }
+  .cover-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #fff;
+    max-width: 600px;
+    margin-bottom: 24px;
+  }
+  .cover-title span { color: #5b9bf8; }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .cover-meta-item { }
+  .cover-meta-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing:.06em; text-transform:uppercase; margin-bottom:3px; }
+  .cover-meta-value { font-size: 15px; color: rgba(255,255,255,0.85); font-weight: 500; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  .section {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .section-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-light);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.25;
+  }
+  .section-sub {
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .kpi-label { font-size: 11px; color: var(--ink-4); text-transform: uppercase; letter-spacing:.06em; margin-bottom: 6px; }
+  .kpi-value { font-size: 24px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--ink-3); margin-top: 5px; }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.amber { color: var(--amber); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.accent { color: var(--accent); }
+
+  /* ── INSIGHT BLOCKS ── */
+  .insight {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .insight.red { border-left-color: var(--red); }
+  .insight.amber { border-left-color: #d97706; }
+  .insight.green { border-left-color: var(--green); }
+  .insight.purple { border-left-color: var(--purple); }
+  .insight-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+  .insight-body {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+
+  /* ── TAGS ── */
+  .tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: .03em;
+  }
+  .tag-red { background: var(--red-light); color: var(--red); }
+  .tag-amber { background: var(--amber-light); color: var(--amber); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-blue { background: var(--accent-light); color: var(--accent); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+  .tag-gray { background: var(--surface-2); color: var(--ink-3); }
+
+  /* ── TWO COLUMNS ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── PROGRESS BARS ── */
+  .bar-item { margin-bottom: 13px; }
+  .bar-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .bar-label { font-size: 12px; color: var(--ink-2); }
+  .bar-value { font-size: 12px; font-weight: 600; }
+  .bar-track { height: 5px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-red .bar-value { color: var(--red); }
+  .bar-red .bar-fill { background: var(--red); }
+  .bar-amber .bar-value { color: var(--amber); }
+  .bar-amber .bar-fill { background: #d97706; }
+  .bar-green .bar-value { color: var(--green); }
+  .bar-green .bar-fill { background: var(--green); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-4);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-strong);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 10px 12px;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody td:first-child { color: var(--ink); font-weight: 500; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-1); }
+
+  /* ── STATUS BADGES ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .badge-red { background: var(--red-light); color: var(--red); }
+  .badge-red::before { background: var(--red); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-amber::before { background: #d97706; }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-green::before { background: var(--green); }
+  .badge-blue { background: var(--accent-light); color: var(--accent); }
+  .badge-blue::before { background: var(--accent); }
+
+  /* ── FUNNEL ── */
+  .funnel-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+    font-size: 13px;
+  }
+  .funnel-step:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+  .funnel-step:last-child { border-radius: 0 0 var(--radius) var(--radius); border-bottom: 1px solid var(--border); background: var(--red-light); }
+  .funnel-step-label { color: var(--ink-2); }
+  .funnel-step-val { font-weight: 600; color: var(--ink); font-size: 14px; }
+  .funnel-note { font-size: 11px; color: var(--ink-4); margin-top: 8px; line-height: 1.5; }
+
+  /* ── ACTION PLAN ── */
+  .action-item {
+    display: flex;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-family: 'Syne', sans-serif;
+  }
+  .action-content { flex: 1; }
+  .action-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+  .action-desc { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+  .action-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+  /* ── COMPETITOR STRATEGY ── */
+  .versus-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media(max-width:560px){ .versus-grid { grid-template-columns: 1fr; } }
+  .versus-card {
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .versus-card.bad { background: var(--red-light); border: 1px solid rgba(192,57,43,0.15); }
+  .versus-card.good { background: var(--green-light); border: 1px solid rgba(26,107,74,0.15); }
+  .versus-card-label { font-size: 10px; font-weight: 700; letter-spacing:.1em; text-transform:uppercase; margin-bottom: 10px; }
+  .versus-card.bad .versus-card-label { color: var(--red); }
+  .versus-card.good .versus-card-label { color: var(--green); }
+  .versus-card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+  .versus-card-desc { font-size: 12px; color: var(--ink-2); line-height: 1.55; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .highlight-box-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .highlight-box-body { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+  .highlight-box-body strong { color: #fff; font-weight: 600; }
+
+  /* ── OPPORTUNITY CARDS ── */
+  .opp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .opp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .opp-card-icon {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .opp-card-icon.blue { background: var(--accent-light); }
+  .opp-card-icon.green { background: var(--green-light); }
+  .opp-card-icon.purple { background: var(--purple-light); }
+  .opp-card-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+  .opp-card-desc { font-size: 12px; color: var(--ink-3); line-height: 1.55; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+  }
+  .footer strong { color: rgba(255,255,255,0.7); }
+
+  /* ── DIVIDER ── */
+  .hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; font-size: 13px; }
+    .cover { background: #0d0d0d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="container">
+    <div class="cover-eyebrow">Consultoria estratégica de tráfego pago</div>
+    <div class="cover-title">Garcia <span>Medical</span> Group — diagnóstico e plano de ação</div>
+    <p style="color:rgba(255,255,255,0.55);font-size:14px;max-width:520px;line-height:1.7;">Análise completa das campanhas Meta Ads e Google Ads, identificação de gargalos e recomendações estratégicas para crescimento sustentável em Houston, TX.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Plataformas</div><div class="cover-meta-value">Meta Ads + Google Ads</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Período analisado</div><div class="cover-meta-value">Jun 2023 → Jul 2026</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Total investido</div><div class="cover-meta-value">$15.361 combinado</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Mercado</div><div class="cover-meta-value">Houston, TX · Público latino</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1 — VISÃO GERAL -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div>
+        <div class="section-title">Panorama atual da conta</div>
+        <div class="section-sub">Onde o dinheiro foi e o que ele trouxe de volta</div>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Investido no Meta</div>
+        <div class="kpi-value">$7.479</div>
+        <div class="kpi-sub">21 campanhas · histórico total</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Investido no Google</div>
+        <div class="kpi-value">$7.882</div>
+        <div class="kpi-sub">1 campanha Search ativa</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Custo/conv. Google</div>
+        <div class="kpi-value green">$0,50</div>
+        <div class="kpi-sub">15.617 conversões rastreadas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CTR Google Search</div>
+        <div class="kpi-value green">9,6%</div>
+        <div class="kpi-sub">Média de saúde no EUA: ~5%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Campanhas ativas (Meta)</div>
+        <div class="kpi-value amber">2 de 21</div>
+        <div class="kpi-sub">Taxa de aproveitamento: 9,5%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Score de otimização</div>
+        <div class="kpi-value amber">68,5%</div>
+        <div class="kpi-sub">Google Ads · abaixo do ideal</div>
+      </div>
+    </div>
+
+    <div class="insight red">
+      <div class="insight-title">Paradoxo de alocação: verba igual, resultados opostos</div>
+      <div class="insight-body">Google e Meta receberam verbas quase idênticas (~$7,5k cada). O Google gerou 15.617 eventos rastreados a $0,50. O Meta gerou principalmente visitas ao perfil do Instagram e engajamento — métricas sem ligação documentada com agendamentos. A distribuição ideal seria 70/30 a favor do Google até o Meta ter campanhas de conversão calibradas e saindo da fase de aprendizado.</div>
+      <div class="tags"><span class="tag tag-red">Realocação urgente</span><span class="tag tag-amber">Meta sem objetivo de conversão</span></div>
+    </div>
+
+    <div class="insight amber">
+      <div class="insight-title">Padrão "testa e abandona" — aprendizado de algoritmo desperdiçado</div>
+      <div class="insight-body">21 campanhas foram criadas no histórico. Apenas 2 estão ativas. Cada nova campanha começa do zero e o algoritmo do Meta precisa de ~50 eventos/semana para sair da fase de aprendizado. Com orçamentos de $1–$20/dia e resets constantes, a conta nunca acumula aprendizado suficiente para otimizar de verdade. O custo invisível disso é maior que o custo visível.</div>
+      <div class="tags"><span class="tag tag-amber">Metodologia de iteração ausente</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 — MATURIDADE DAS CONTAS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div>
+        <div class="section-title">Maturidade das contas</div>
+        <div class="section-sub">Diagnóstico estrutural por plataforma</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Meta Ads</div>
+        <div class="bar-item bar-red">
+          <div class="bar-row"><span class="bar-label">Estrutura de campanhas</span><span class="bar-value">15%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:15%"></div></div>
+        </div>
+        <div class="bar-item bar-red">
+          <div class="bar-row"><span class="bar-label">Objetivo alinhado ao negócio</span><span class="bar-value">10%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:10%"></div></div>
+        </div>
+        <div class="bar-item bar-amber">
+          <div class="bar-row"><span class="bar-label">Gestão de audiências</span><span class="bar-value">25%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
+        </div>
+        <div class="bar-item bar-red">
+          <div class="bar-row"><span class="bar-label">Consistência de orçamento</span><span class="bar-value">5%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+        </div>
+        <div class="bar-item bar-amber">
+          <div class="bar-row"><span class="bar-label">Rastreamento e pixel</span><span class="bar-value">40%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Google Ads</div>
+        <div class="bar-item bar-green">
+          <div class="bar-row"><span class="bar-label">Performance de conversão</span><span class="bar-value">90%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        </div>
+        <div class="bar-item bar-amber">
+          <div class="bar-row"><span class="bar-label">Cobertura de palavras-chave</span><span class="bar-value">45%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:45%"></div></div>
+        </div>
+        <div class="bar-item bar-red">
+          <div class="bar-row"><span class="bar-label">Higiene de negativos</span><span class="bar-value">20%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
+        </div>
+        <div class="bar-item bar-red">
+          <div class="bar-row"><span class="bar-label">Segmentação por serviço</span><span class="bar-value">5%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
+        </div>
+        <div class="bar-item bar-amber">
+          <div class="bar-row"><span class="bar-label">Score de otimização</span><span class="bar-value">68%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:68%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 — SINAIS NOS DADOS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div>
+        <div class="section-title">Sinais que os dados revelam</div>
+        <div class="section-sub">O que está escondido nos dashboards e ninguém está lendo</div>
+      </div>
+    </div>
+
+    <div class="insight" style="border-left-color:var(--purple)">
+      <div class="insight-title">A busca de marca do Dr. Daniel já está funcionando — e está sendo desperdiçada</div>
+      <div class="insight-body">Os termos de busca do Google mostram "dr garcia cardiologist", "garcia heart and vascular", "dr daniel garcia cardiologist" com volume relevante. Isso prova que o YouTube e o boca a boca estão gerando demanda ativa. Mas esse tráfego de marca está competindo no mesmo grupo de anúncios que termos genéricos caros como "cardiovascular disease". Uma campanha branded separada custaria 60–70% menos por clique e capturaria alguém que já decidiu procurar o Dr. Daniel especificamente.</div>
+      <div class="tags"><span class="tag tag-purple">Campanha de marca separada</span><span class="tag tag-green">CPC estimado 60–70% menor</span></div>
+    </div>
+
+    <div class="insight" style="border-left-color:var(--purple)">
+      <div class="insight-title">Demanda em espanhol no Google — ativa, sem captura e com baixíssima concorrência</div>
+      <div class="insight-body">"Cardiólogo cerca de mí", "cardiologo near me", "cardiologo en houston tx", "cardiólogos cerca de mi en español" aparecem nos termos de busca orgânicos da conta. Existe demanda ativa buscando em espanhol no Google — mas não há nenhuma campanha em espanhol ativa nessa plataforma. Como poucos anunciantes concorrem por esses termos, o CPC estimado é 3x a 5x menor que os equivalentes em inglês. É a oportunidade de menor custo e maior alinhamento com o diferencial da clínica.</div>
+      <div class="tags"><span class="tag tag-purple">Menor concorrência no Search</span><span class="tag tag-green">Diferencial do Dr. Daniel</span></div>
+    </div>
+
+    <div class="insight amber">
+      <div class="insight-title">86% do tráfego vem de celular — criativos e landing pages provavelmente não estão otimizados</div>
+      <div class="insight-body">O Google mostra que 86,3% do custo e 86,5% dos cliques vêm de smartphones. Se a landing page não carrega em menos de 3 segundos no mobile, ou se o botão "ligar" não é clicável com um toque, uma fatia enorme do orçamento está sendo desperdiçada no último metro. Essa é uma das causas mais comuns de CTR alto com conversão baixa — e não aparece em nenhum dashboard de mídia. Recomendamos um teste de velocidade e usabilidade mobile imediato.</div>
+      <div class="tags"><span class="tag tag-amber">Auditoria mobile urgente</span><span class="tag tag-blue">Google PageSpeed + Core Web Vitals</span></div>
+    </div>
+
+    <div class="insight red">
+      <div class="insight-title">As 15.617 "conversões" do Google precisam ser auditadas — o número não fecha com a realidade</div>
+      <div class="insight-body">15.617 conversões a $0,50 em uma clínica com 2 secretárias, sem CRM e sem automação de agendamento é estatisticamente impossível se estivermos falando de consultas marcadas. O mais provável é que a tag esteja contando visitas à página de contato, cliques no número de telefone, ou sessões acima de X segundos. Isso mascara completamente o CPA real de um agendamento efetivo — que provavelmente é 10x a 50x mais alto. Antes de qualquer decisão de escala, é preciso auditar o Gerenciador de Eventos e redefinir o que conta como conversão.</div>
+      <div class="tags"><span class="tag tag-red">CPA real desconhecido</span><span class="tag tag-amber">Auditar tag de conversão</span></div>
+    </div>
+
+    <div class="insight red">
+      <div class="insight-title">Ausência total de remarketing — o buraco mais caro do funil</div>
+      <div class="insight-body">Com 829 mil impressões no Meta e 166 mil no Google, um volume relevante de usuários já viu anúncios ou visitou o site sem converter. No setor de saúde americano, o ciclo de decisão médio é de 3 a 14 dias — o paciente pesquisa, pondera, consulta a família. Sem remarketing em nenhuma plataforma, todo esse custo de aquisição de atenção evapora sem retorno. Uma campanha de remarketing para quem visitou o site nos últimos 30 dias pode ter CPA 40–60% menor que aquisição fria.</div>
+      <div class="tags"><span class="tag tag-red">Funil sem recaptura</span><span class="tag tag-amber">CPA potencial 40–60% menor</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 — TERMOS DE BUSCA -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div>
+        <div class="section-title">Análise de termos de busca</div>
+        <div class="section-sub">O que manter, o que cortar e onde existe oportunidade escondida</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:30%">Termo de busca</th>
+            <th style="width:18%">Classificação</th>
+            <th>Ação recomendada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>dr garcia cardiologist · garcia heart and vascular</td>
+            <td><span class="badge badge-green">Marca própria</span></td>
+            <td>Criar campanha branded separada — CPC estimado 60–70% menor que genérico</td>
+          </tr>
+          <tr>
+            <td>cardiologo cerca de mi · cardiologo en houston tx · en español</td>
+            <td><span class="badge badge-green">Alta intenção · espanhol</span></td>
+            <td>Grupo de anúncios exclusivo em espanhol — baixíssima concorrência paga</td>
+          </tr>
+          <tr>
+            <td>cardiologist near me · best cardiologist houston · interventional cardiology</td>
+            <td><span class="badge badge-green">Alta intenção</span></td>
+            <td>Manter — são o core da campanha atual</td>
+          </tr>
+          <tr>
+            <td>angioplasty · angioplasty procedure</td>
+            <td><span class="badge badge-green">Intenção médica alta</span></td>
+            <td>Manter + criar anúncio e landing page específicos para o procedimento</td>
+          </tr>
+          <tr>
+            <td>memorial katy cardiology · hall garcia · willowbrook cardiovascular</td>
+            <td><span class="badge badge-amber">Concorrente direto</span></td>
+            <td>Adicionar como palavras-chave negativas — usuário quer outro médico</td>
+          </tr>
+          <tr>
+            <td>houston methodist cardiologist · houston methodist cardiology</td>
+            <td><span class="badge badge-amber">Sistema hospitalar</span></td>
+            <td>Negativo — paciente vinculado a plano de saúde, não converte para clínica privada</td>
+          </tr>
+          <tr>
+            <td>pediatric cardiology · pediatric cardiology associates</td>
+            <td><span class="badge badge-red">Fora do escopo</span></td>
+            <td>Negativo imediato — a clínica não atende crianças</td>
+          </tr>
+          <tr>
+            <td>cardiac rehab · cardiac rehab near me</td>
+            <td><span class="badge badge-red">Serviço ausente</span></td>
+            <td>Negativo — serviço não oferecido, custo sem retorno</td>
+          </tr>
+          <tr>
+            <td>cardiothoracic surgeon · vascular surgeon</td>
+            <td><span class="badge badge-red">Especialidade errada</span></td>
+            <td>Negativo — confunde especialidade, paciente não encontrará o que busca</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 — ESTRATÉGIA DE CONCORRENTES -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div>
+        <div class="section-title">Estratégia de concorrentes no Google Ads</div>
+        <div class="section-sub">Anunciar para concorrentes é comum no mercado médico — mas exige critério</div>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-box-title">A pergunta certa não é "anunciar ou não para concorrentes"</div>
+      <div class="highlight-box-body">A pergunta é: <strong>qual concorrente, com qual mensagem, para qual intenção de busca?</strong> Anunciar para "houston methodist cardiologist" é diferente de anunciar para "cardiologist katy tx que fala español". O diferencial do Dr. Daniel não está no preço nem na localização — está no idioma e na acessibilidade. A estratégia de concorrentes funciona quando o paciente está buscando um serviço que o concorrente não consegue entregar tão bem.</div>
+    </div>
+
+    <div class="versus-grid">
+      <div class="versus-card bad">
+        <div class="versus-card-label">Não recomendado</div>
+        <div class="versus-card-title">Anunciar para sistemas hospitalares grandes</div>
+        <div class="versus-card-desc">Houston Methodist, Memorial Hermann, Houston Methodist Cardiology. CPCs altos, paciente já vinculado a plano de saúde, intenção de busca não é transferível para clínica privada. Custo alto, conversão próxima de zero.</div>
+      </div>
+      <div class="versus-card good">
+        <div class="versus-card-label">Recomendado</div>
+        <div class="versus-card-title">Explorar o vazio que os concorrentes deixam</div>
+        <div class="versus-card-desc">Nenhum concorrente relevante em Houston anuncia ativamente em espanhol. "Cardiologo cerca de mi" e "cardiologo houston español" têm CPC 3x–5x menor e o Dr. Daniel é o único que entrega o que o paciente está buscando.</div>
+      </div>
+    </div>
+
+    <div class="insight green">
+      <div class="insight-title">A estratégia de concorrentes mais eficiente: ocupar o vazio linguístico</div>
+      <div class="insight-body">Quando um paciente busca "cardiologist katy tx" ou "heart doctor near me" em inglês e o Dr. Daniel aparece com um anúncio em espanhol destacando "Hablamos español — atendemos en tu idioma", ele está se diferenciando de todos os concorrentes ao mesmo tempo com uma única mensagem — e pagando o CPC do termo genérico, não o prêmio de um termo de marca concorrente. Esse é o movimento mais eficiente disponível na conta hoje.</div>
+      <div class="tags"><span class="tag tag-green">Diferenciação sem custo extra</span><span class="tag tag-blue">Extensão de anúncio com idioma</span></div>
+    </div>
+
+    <div class="insight amber">
+      <div class="insight-title">Concorrentes pequenos e locais: avaliar caso a caso</div>
+      <div class="insight-body">Clínicas como "Vital Heart and Vein", "Modern Heart and Vascular" e "Texas Heart and Vascular Specialists" aparecem nos termos de busca. Para esses, a estratégia de conquista pode fazer sentido — desde que o anúncio do Dr. Daniel destaque claramente o atendimento em espanhol e a acessibilidade de pagamento (parcelamento), que são diferenciais que essas clínicas dificilmente igualam. Recomendamos testar com orçamento limitado ($5–10/dia) e monitorar taxa de conversão separadamente.</div>
+      <div class="tags"><span class="tag tag-amber">Testar com budget controlado</span><span class="tag tag-blue">Mensurar conversão separadamente</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6 — FUNIL -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">06</div>
+      <div>
+        <div class="section-title">Modelo de funil e estimativa de vazamento</div>
+        <div class="section-sub">O maior problema não está na mídia — está no que acontece depois do clique</div>
+      </div>
+    </div>
+
+    <div class="funnel-step"><span class="funnel-step-label">Impressões totais (Meta + Google estimado)</span><span class="funnel-step-val">~1.000.000+</span></div>
+    <div class="funnel-step"><span class="funnel-step-label">Cliques e interações</span><span class="funnel-step-val">~17.000–18.000</span></div>
+    <div class="funnel-step"><span class="funnel-step-label">Conversões rastreadas (Google) — definição suspeita</span><span class="funnel-step-val" style="color:var(--amber)">15.617 ???</span></div>
+    <div class="funnel-step"><span class="funnel-step-label">Leads reais chegando (estimativa Dr. Daniel: ~10/dia veias)</span><span class="funnel-step-val">~300/mês</span></div>
+    <div class="funnel-step"><span class="funnel-step-label">Agendamentos confirmados (sem automação, SLA +24h)</span><span class="funnel-step-val" style="color:var(--amber)">~150/mês (50%)</span></div>
+    <div class="funnel-step"><span class="funnel-step-label">Pacientes que aparecem na clínica</span><span class="funnel-step-val" style="color:var(--red)">~75–90/mês (25–30%)</span></div>
+    <p class="funnel-note">* O SLA de +24h para resposta identificado no cliente oculto é o principal responsável pela queda de ~50% entre leads e agendamentos. Resolver o atendimento pode dobrar o resultado sem aumentar o orçamento de mídia em um centavo.</p>
+
+    <div class="hr"></div>
+
+    <div class="insight red">
+      <div class="insight-title">O leaky bucket: onde os leads estão escapando</div>
+      <div class="insight-body">A mídia está trazendo as pessoas até a porta. O problema está na porta. Lead chega pelo Instagram — resposta em +24h. Lead liga — secretária ocupada. Lead manda mensagem — sistema não permite agendamento do Brasil. A automação de atendimento (IA via WhatsApp) e a definição de um SLA de resposta de no máximo 15 minutos têm impacto direto no faturamento imediato, sem depender de nenhum ajuste de campanha.</div>
+      <div class="tags"><span class="tag tag-red">Impacto imediato no faturamento</span><span class="tag tag-amber">SLA máximo: 15 minutos</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7 — OPORTUNIDADES INEXISTENTES -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">07</div>
+      <div>
+        <div class="section-title">Oportunidades que ainda não existem na conta</div>
+        <div class="section-sub">Recursos disponíveis nas plataformas que não foram ativados</div>
+      </div>
+    </div>
+
+    <div class="opp-grid">
+      <div class="opp-card">
+        <div class="opp-card-icon blue">📊</div>
+        <div class="opp-card-title">Performance Max (Google)</div>
+        <div class="opp-card-desc">A conta roda só Search. Uma campanha PMax alimentada com vídeos do Dr. Daniel (YouTube) e fotos da clínica rodaria Display, YouTube e Discovery com o mesmo orçamento — usando o ML do Google para encontrar o canal mais eficiente automaticamente.</div>
+        <div class="tags" style="margin-top:8px"><span class="tag tag-blue">Alcance multicanal</span></div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon green">👥</div>
+        <div class="opp-card-title">Customer Match</div>
+        <div class="opp-card-desc">A clínica tem prontuários de pacientes reais. Upload anonimizado dessa lista no Google e Meta cria um Lookalike de altíssima precisão — pessoas com perfil idêntico a quem já pagou. É o público com maior taxa de conversão possível e custo zero para construir.</div>
+        <div class="tags" style="margin-top:8px"><span class="tag tag-green">Custo zero de construção</span></div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon blue">📞</div>
+        <div class="opp-card-title">Extensões de anúncio (Google)</div>
+        <div class="opp-card-desc">Nenhuma extensão está configurada. Extensão de chamada com horário comercial, localização, sitelinks por serviço (veias, wellness, cosmetologia) e extensão de idioma podem elevar o CTR de 9,6% para 12–15% sem aumentar o CPC.</div>
+        <div class="tags" style="margin-top:8px"><span class="tag tag-blue">CTR +25–55% estimado</span></div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon purple">🔁</div>
+        <div class="opp-card-title">Remarketing ativo</div>
+        <div class="opp-card-desc">Nenhuma campanha de remarketing existe em nenhuma plataforma. Com o volume de tráfego já gerado, uma campanha para visitantes dos últimos 30 dias pode ter CPA 40–60% menor que aquisição fria — capturando o paciente que já pesquisou mas ainda não agendou.</div>
+        <div class="tags" style="margin-top:8px"><span class="tag tag-purple">CPA 40–60% menor estimado</span></div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon green">📍</div>
+        <div class="opp-card-title">Geo-segmentação Katy + subúrbios</div>
+        <div class="opp-card-desc">O Google já sinaliza "Katy" como localização relevante nos indicadores de lance. Katy, Cypress e Sugar Land têm alta densidade de latinos de renda média-alta — CPC menor que "Houston" genérico, com público alinhado ao perfil da clínica.</div>
+        <div class="tags" style="margin-top:8px"><span class="tag tag-green">CPC menor · público qualificado</span></div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon blue">💬</div>
+        <div class="opp-card-title">Campanhas por serviço (Meta)</div>
+        <div class="opp-card-desc">Hoje não existe nenhuma campanha ativa de Mensagem ou Conversão no Meta para nenhum serviço específico. Veias, wellness, cosmetologia e cardiologia têm públicos, criativos e mensagens totalmente diferentes — e merecem campanhas separadas com objetivos corretos.</div>
+        <div class="tags" style="margin-top:8px"><span class="tag tag-blue">Segmentação por serviço</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 8 — PLANO DE AÇÃO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">08</div>
+      <div>
+        <div class="section-title">Plano de ação prioritário</div>
+        <div class="section-sub">Ordenado por impacto imediato no faturamento, não por facilidade de execução</div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-content">
+        <div class="action-title">Auditar e corrigir a tag de conversão do Google</div>
+        <div class="action-desc">Acessar o Gerenciador de Eventos do Google Ads e identificar exatamente o que está sendo contado como "conversão". Redefinir para um evento de alta intenção: clique no botão de telefone, envio do formulário de contato, ou início de conversa no WhatsApp. Sem isso, todas as decisões de orçamento são cegas.</div>
+        <div class="action-meta">
+          <span class="tag tag-red">Prioridade máxima</span>
+          <span class="tag tag-gray">Prazo: 48h</span>
+          <span class="tag tag-blue">Responsável: gestor de tráfego</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-content">
+        <div class="action-title">Adicionar palavras-chave negativas no Google</div>
+        <div class="action-desc">Excluir imediatamente: sistemas hospitalares concorrentes (Houston Methodist, Memorial Hermann), termos de especialidades fora do escopo (pediatric cardiology, cardiothoracic surgeon), e serviços não oferecidos (cardiac rehab). Isso para o sangramento de budget em cliques que nunca convertem.</div>
+        <div class="action-meta">
+          <span class="tag tag-red">Prioridade máxima</span>
+          <span class="tag tag-gray">Prazo: 48h</span>
+          <span class="tag tag-green">Impacto: redução imediata de custo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-content">
+        <div class="action-title">Criar campanha de Mensagem (WhatsApp) no Meta para veias em espanhol</div>
+        <div class="action-desc">Reaproveitar o criativo e o público da campanha "VENAS ESP" que provou $0,44/clique. Objetivo: "Mensagens" direcionado ao WhatsApp Business. Orçamento mínimo: $30/dia para sair da fase de aprendizado em ~7 dias. Audiência: [WM][25-65+][Houston Area][Spanish] já estruturada nos conjuntos existentes.</div>
+        <div class="action-meta">
+          <span class="tag tag-amber">Prioridade alta</span>
+          <span class="tag tag-gray">Prazo: 7 dias</span>
+          <span class="tag tag-purple">Diferencial linguístico do Dr. Daniel</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-content">
+        <div class="action-title">Criar campanha branded separada no Google</div>
+        <div class="action-desc">Separar os termos de marca ("dr garcia cardiologist", "garcia heart", "garcia heart and vascular") em uma campanha exclusiva com CPC máximo menor. Isso protege a marca contra concorrentes que possam licitar sobre o nome e captura o paciente que já decidiu — com custo 60–70% menor que termos genéricos.</div>
+        <div class="action-meta">
+          <span class="tag tag-amber">Prioridade alta</span>
+          <span class="tag tag-gray">Prazo: 7 dias</span>
+          <span class="tag tag-green">ROI imediato e mensurável</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">5</div>
+      <div class="action-content">
+        <div class="action-title">Criar grupo de anúncios em espanhol no Google Search</div>
+        <div class="action-desc">Criar um Ad Group dentro da campanha atual (ou nova campanha separada) com palavras-chave em espanhol: "cardiologo cerca de mi", "cardiologo houston", "cardiologo en houston tx", "cardiólogo cerca de mí". Anúncio inteiramente em espanhol com CTA "Hablamos su idioma — llame ahora". Menor concorrência = menor CPC.</div>
+        <div class="action-meta">
+          <span class="tag tag-amber">Prioridade alta</span>
+          <span class="tag tag-gray">Prazo: 7–14 dias</span>
+          <span class="tag tag-purple">CPC 3x–5x menor estimado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">6</div>
+      <div class="action-content">
+        <div class="action-title">Configurar extensões de anúncio no Google</div>
+        <div class="action-desc">Ativar: extensão de chamada (com horário de funcionamento 9h–17h), extensão de localização, sitelinks por serviço (Cardiologia, Veias e Varizes, Wellness, Estética), extensão de destaque com "Atendemos em Espanhol", "Parcelamento disponível", "Sem longa espera". Impacto estimado no CTR: +25 a 55% sem aumento de CPC.</div>
+        <div class="action-meta">
+          <span class="tag tag-amber">Prioridade alta</span>
+          <span class="tag tag-gray">Prazo: 7 dias</span>
+          <span class="tag tag-green">Impacto no CTR sem custo extra</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">7</div>
+      <div class="action-content">
+        <div class="action-title">Ativar remarketing no Meta e Google</div>
+        <div class="action-desc">Criar público de remarketing com visitantes do site nos últimos 30 dias (pixel Meta e tag Google). Criar campanha dedicada com mensagem de "retorno": "Você pesquisou sobre saúde cardiovascular. O Dr. Daniel está disponível para uma avaliação esta semana." CPA esperado: 40–60% abaixo de aquisição fria.</div>
+        <div class="action-meta">
+          <span class="tag tag-amber">Prioridade média-alta</span>
+          <span class="tag tag-gray">Prazo: 14–21 dias</span>
+          <span class="tag tag-green">CPA reduzido · ciclo de decisão médio 7 dias</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">8</div>
+      <div class="action-content">
+        <div class="action-title">Fazer upload de Customer Match (lista de pacientes) no Google e Meta</div>
+        <div class="action-desc">Exportar lista de contatos dos pacientes existentes (nome, email, telefone), anonimizar conforme HIPAA, fazer upload no Google Ads e Meta. Criar Lookalike 1–3% baseado nessa lista. É o público com perfil mais próximo de quem já pagou — conversão naturalmente mais alta com custo de construção zero.</div>
+        <div class="action-meta">
+          <span class="tag tag-blue">Prioridade média</span>
+          <span class="tag tag-gray">Prazo: 21–30 dias</span>
+          <span class="tag tag-amber">Atenção: compliance HIPAA</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-item">
+      <div class="action-num">9</div>
+      <div class="action-content">
+        <div class="action-title">Realizar auditoria de velocidade e usabilidade mobile</div>
+        <div class="action-desc">Com 86% do tráfego vindo de celular, a experiência mobile é o fator de conversão mais subestimado da conta. Testar a landing page/site em Google PageSpeed Insights e corrigir: tempo de carregamento abaixo de 3s, botão de ligação clicável com um toque, formulário de agendamento simples e visível acima do fold.</div>
+        <div class="action-meta">
+          <span class="tag tag-blue">Prioridade média</span>
+          <span class="tag tag-gray">Prazo: 14 dias</span>
+          <span class="tag tag-green">Impacto direto na taxa de conversão pós-clique</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Garcia Medical Group — Consultoria Estratégica de Tráfego Pago</strong><br>
+  Documento preparado com base na análise direta das contas Meta Ads e Google Ads · Houston, TX · Julho 2026
+</div>
+
+</body>
+</html>
