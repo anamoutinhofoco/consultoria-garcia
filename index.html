@@ -401,10 +401,121 @@
   .hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 
   /* ── PRINT ── */
+  /* ── TAB NAV ── */
+  .tabnav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(247,246,243,0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .tabnav-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+  }
+  .tabbtn {
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-3);
+    padding: 16px 6px 14px;
+    margin-right: 20px;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tabbtn:hover { color: var(--ink); }
+  .tabbtn.active { color: var(--ink); border-bottom-color: var(--accent); }
+  .tabbtn .dot { font-size: 15px; }
+  .tabpane { display: none; }
+  .tabpane.active { display: block; }
+
+  /* ── MEETING / REUNIÃO ── */
+  .meet-lead {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 640px;
+  }
+  .prio-card {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    background: var(--surface);
+  }
+  .prio-card.urgent { border-left-color: var(--red); }
+  .prio-card.mid { border-left-color: var(--amber); }
+  .prio-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .prio-card-title { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .prio-card-body { font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+  .prio-card-body b { color: var(--ink); font-weight: 600; }
+  .owner-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 20px; background: var(--surface-2); color: var(--ink-3);
+    margin-left: auto;
+  }
+  .decision-list { list-style: none; }
+  .decision-list li {
+    display: flex; gap: 12px; padding: 12px 0;
+    border-bottom: 1px solid var(--border); font-size: 13px; color: var(--ink-2); line-height: 1.6;
+  }
+  .decision-list li:last-child { border-bottom: none; }
+  .decision-list li::before {
+    content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0;
+  }
+  .decision-list li b { color: var(--ink); font-weight: 600; }
+  .transcript-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    max-height: 520px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--ink-2);
+    white-space: pre-wrap;
+  }
+  .transcript-box::-webkit-scrollbar { width: 8px; }
+  .transcript-box::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }
+  .fact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .fact-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+  }
+  .fact-label { font-size: 10px; font-weight: 700; letter-spacing:.08em; text-transform:uppercase; color: var(--ink-4); margin-bottom: 5px; }
+  .fact-value { font-size: 13px; color: var(--ink); line-height: 1.5; font-weight: 500; }
+
   @media print {
     body { background: white; font-size: 13px; }
     .cover { background: #0d0d0d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .section { page-break-inside: avoid; }
+    .tabnav { display: none; }
+    .tabpane { display: block !important; }
   }
 </style>
 </head>
@@ -424,6 +535,18 @@
     </div>
   </div>
 </div>
+
+<!-- TAB NAV -->
+<div class="tabnav">
+  <div class="tabnav-inner">
+    <button class="tabbtn active" id="tab-report" onclick="showTab('report')"><span class="dot">📊</span> Diagnóstico &amp; plano</button>
+    <button class="tabbtn" id="tab-meeting" onclick="showTab('meeting')"><span class="dot">🗣️</span> Reunião de onboarding</button>
+    <button class="tabbtn" id="tab-traffic" onclick="showTab('traffic')"><span class="dot">🚦</span> Reunião de tráfego</button>
+  </div>
+</div>
+
+<!-- ══════════ PANE: REPORT ══════════ -->
+<div class="tabpane active" id="pane-report">
 
 <!-- SECTION 1 — VISÃO GERAL -->
 <div class="section">
@@ -460,106 +583,39 @@
       <div class="kpi-card">
         <div class="kpi-label">Campanhas ativas (Meta)</div>
         <div class="kpi-value amber">2 de 21</div>
-        <div class="kpi-sub">Taxa de aproveitamento: 9,5%</div>
+        <div class="kpi-sub">Histórico de testes e aprendizados</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Score de otimização</div>
-        <div class="kpi-value amber">68,5%</div>
-        <div class="kpi-sub">Google Ads · abaixo do ideal</div>
-      </div>
+
     </div>
 
     <div class="insight red">
-      <div class="insight-title">Paradoxo de alocação: verba igual, resultados opostos</div>
-      <div class="insight-body">Google e Meta receberam verbas quase idênticas (~$7,5k cada). O Google gerou 15.617 eventos rastreados a $0,50. O Meta gerou principalmente visitas ao perfil do Instagram e engajamento — métricas sem ligação documentada com agendamentos. A distribuição ideal seria 70/30 a favor do Google até o Meta ter campanhas de conversão calibradas e saindo da fase de aprendizado.</div>
-      <div class="tags"><span class="tag tag-red">Realocação urgente</span><span class="tag tag-amber">Meta sem objetivo de conversão</span></div>
+      <div class="insight-title">Oportunidade de rebalancear a alocação entre plataformas</div>
+      <div class="insight-body">Google e Meta receberam investimentos próximos (~$7,5k cada). O Google já está gerando conversões a $0,50 com boa eficiência. O Meta, por sua vez, tem rodado com objetivos de Engajamento e Awareness — que têm papel importante no topo de funil, mas que podem ser complementados com campanhas de conversão direta para ampliar o retorno. Uma distribuição progressiva com maior peso no Google, enquanto o Meta ganha campanhas de conversão calibradas, pode maximizar o resultado conjunto.</div>
+      <div class="tags"><span class="tag tag-red">Rebalancear investimento entre plataformas</span><span class="tag tag-amber">Meta com foco em conversão a desenvolver</span></div>
     </div>
 
     <div class="insight amber">
-      <div class="insight-title">Padrão "testa e abandona" — aprendizado de algoritmo desperdiçado</div>
-      <div class="insight-body">21 campanhas foram criadas no histórico. Apenas 2 estão ativas. Cada nova campanha começa do zero e o algoritmo do Meta precisa de ~50 eventos/semana para sair da fase de aprendizado. Com orçamentos de $1–$20/dia e resets constantes, a conta nunca acumula aprendizado suficiente para otimizar de verdade. O custo invisível disso é maior que o custo visível.</div>
-      <div class="tags"><span class="tag tag-amber">Metodologia de iteração ausente</span></div>
+      <div class="insight-title">Oportunidade de consolidar aprendizados das campanhas anteriores</div>
+      <div class="insight-body">Ao longo do histórico, foram criadas e testadas 21 campanhas — o que representa um volume valioso de aprendizados sobre o público. A próxima etapa é aproveitar esses dados para consolidar esforços em menos campanhas, com orçamentos maiores por conjunto, permitindo que o algoritmo do Meta acumule os ~50 eventos/semana necessários para sair da fase de aprendizado e otimizar com mais precisão.</div>
+      <div class="tags"><span class="tag tag-amber">Consolidar campanhas para ganhar aprendizado</span></div>
     </div>
   </div>
 </div>
 
-<!-- SECTION 2 — MATURIDADE DAS CONTAS -->
+<!-- SECTION 2 — SINAIS NOS DADOS -->
 <div class="section">
   <div class="container">
     <div class="section-header">
       <div class="section-number">02</div>
       <div>
-        <div class="section-title">Maturidade das contas</div>
-        <div class="section-sub">Diagnóstico estrutural por plataforma</div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title">Meta Ads</div>
-        <div class="bar-item bar-red">
-          <div class="bar-row"><span class="bar-label">Estrutura de campanhas</span><span class="bar-value">15%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:15%"></div></div>
-        </div>
-        <div class="bar-item bar-red">
-          <div class="bar-row"><span class="bar-label">Objetivo alinhado ao negócio</span><span class="bar-value">10%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:10%"></div></div>
-        </div>
-        <div class="bar-item bar-amber">
-          <div class="bar-row"><span class="bar-label">Gestão de audiências</span><span class="bar-value">25%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
-        </div>
-        <div class="bar-item bar-red">
-          <div class="bar-row"><span class="bar-label">Consistência de orçamento</span><span class="bar-value">5%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-        </div>
-        <div class="bar-item bar-amber">
-          <div class="bar-row"><span class="bar-label">Rastreamento e pixel</span><span class="bar-value">40%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Google Ads</div>
-        <div class="bar-item bar-green">
-          <div class="bar-row"><span class="bar-label">Performance de conversão</span><span class="bar-value">90%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
-        </div>
-        <div class="bar-item bar-amber">
-          <div class="bar-row"><span class="bar-label">Cobertura de palavras-chave</span><span class="bar-value">45%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:45%"></div></div>
-        </div>
-        <div class="bar-item bar-red">
-          <div class="bar-row"><span class="bar-label">Higiene de negativos</span><span class="bar-value">20%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
-        </div>
-        <div class="bar-item bar-red">
-          <div class="bar-row"><span class="bar-label">Segmentação por serviço</span><span class="bar-value">5%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:5%"></div></div>
-        </div>
-        <div class="bar-item bar-amber">
-          <div class="bar-row"><span class="bar-label">Score de otimização</span><span class="bar-value">68%</span></div>
-          <div class="bar-track"><div class="bar-fill" style="width:68%"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SECTION 3 — SINAIS NOS DADOS -->
-<div class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-number">03</div>
-      <div>
         <div class="section-title">Sinais que os dados revelam</div>
-        <div class="section-sub">O que está escondido nos dashboards e ninguém está lendo</div>
+        <div class="section-sub">Oportunidades identificadas na análise das contas</div>
       </div>
     </div>
 
     <div class="insight" style="border-left-color:var(--purple)">
-      <div class="insight-title">A busca de marca do Dr. Daniel já está funcionando — e está sendo desperdiçada</div>
-      <div class="insight-body">Os termos de busca do Google mostram "dr garcia cardiologist", "garcia heart and vascular", "dr daniel garcia cardiologist" com volume relevante. Isso prova que o YouTube e o boca a boca estão gerando demanda ativa. Mas esse tráfego de marca está competindo no mesmo grupo de anúncios que termos genéricos caros como "cardiovascular disease". Uma campanha branded separada custaria 60–70% menos por clique e capturaria alguém que já decidiu procurar o Dr. Daniel especificamente.</div>
+      <div class="insight-title">A busca de marca do Dr. Daniel já está funcionando — e pode ser melhor capturada</div>
+      <div class="insight-body">Os termos de busca do Google mostram "dr garcia cardiologist", "garcia heart and vascular", "dr daniel garcia cardiologist" com volume relevante. Isso prova que o YouTube e o boca a boca estão gerando demanda ativa. Atualmente esse tráfego de marca está no mesmo grupo de anúncios que termos genéricos. Separar esses termos em uma campanha de marca dedicada reduziria o CPC em 60–70% e garantiria que quem já pesquisou o nome do Dr. Daniel seja capturado com prioridade e menor custo.</div>
       <div class="tags"><span class="tag tag-purple">Campanha de marca separada</span><span class="tag tag-green">CPC estimado 60–70% menor</span></div>
     </div>
 
@@ -570,33 +626,33 @@
     </div>
 
     <div class="insight amber">
-      <div class="insight-title">86% do tráfego vem de celular — criativos e landing pages provavelmente não estão otimizados</div>
-      <div class="insight-body">O Google mostra que 86,3% do custo e 86,5% dos cliques vêm de smartphones. Se a landing page não carrega em menos de 3 segundos no mobile, ou se o botão "ligar" não é clicável com um toque, uma fatia enorme do orçamento está sendo desperdiçada no último metro. Essa é uma das causas mais comuns de CTR alto com conversão baixa — e não aparece em nenhum dashboard de mídia. Recomendamos um teste de velocidade e usabilidade mobile imediato.</div>
+      <div class="insight-title">86% do tráfego vem de celular — vale revisar a experiência mobile</div>
+      <div class="insight-body">O Google mostra que 86,3% do custo e 86,5% dos cliques vêm de smartphones. Com esse volume de acesso mobile, uma revisão de velocidade e usabilidade no celular pode fazer grande diferença na conversão pós-clique. Se o tempo de carregamento estiver acima de 3 segundos ou o botão de ligação não estiver em destaque, parte do potencial das campanhas fica represado nessa última etapa. Um teste no Google PageSpeed ajuda a identificar melhorias rápidas.</div>
       <div class="tags"><span class="tag tag-amber">Auditoria mobile urgente</span><span class="tag tag-blue">Google PageSpeed + Core Web Vitals</span></div>
     </div>
 
     <div class="insight red">
-      <div class="insight-title">As 15.617 "conversões" do Google precisam ser auditadas — o número não fecha com a realidade</div>
-      <div class="insight-body">15.617 conversões a $0,50 em uma clínica com 2 secretárias, sem CRM e sem automação de agendamento é estatisticamente impossível se estivermos falando de consultas marcadas. O mais provável é que a tag esteja contando visitas à página de contato, cliques no número de telefone, ou sessões acima de X segundos. Isso mascara completamente o CPA real de um agendamento efetivo — que provavelmente é 10x a 50x mais alto. Antes de qualquer decisão de escala, é preciso auditar o Gerenciador de Eventos e redefinir o que conta como conversão.</div>
-      <div class="tags"><span class="tag tag-red">CPA real desconhecido</span><span class="tag tag-amber">Auditar tag de conversão</span></div>
+      <div class="insight-title">Vale validar a definição de conversão no Google para garantir precisão nos dados</div>
+      <div class="insight-body">O volume de conversões rastreadas no Google é expressivo, e vale confirmar exatamente quais eventos estão sendo contabilizados — se são cliques no telefone, visitas à página de contato ou agendamentos confirmados. Essa clareza é importante para calcular o CPA real por consulta e tomar decisões de escala com mais segurança. Uma revisão rápida no Gerenciador de Eventos resolve isso.</div>
+      <div class="tags"><span class="tag tag-red">Validar definição de conversão</span><span class="tag tag-amber">Auditar tag de conversão</span></div>
     </div>
 
     <div class="insight red">
-      <div class="insight-title">Ausência total de remarketing — o buraco mais caro do funil</div>
-      <div class="insight-body">Com 829 mil impressões no Meta e 166 mil no Google, um volume relevante de usuários já viu anúncios ou visitou o site sem converter. No setor de saúde americano, o ciclo de decisão médio é de 3 a 14 dias — o paciente pesquisa, pondera, consulta a família. Sem remarketing em nenhuma plataforma, todo esse custo de aquisição de atenção evapora sem retorno. Uma campanha de remarketing para quem visitou o site nos últimos 30 dias pode ter CPA 40–60% menor que aquisição fria.</div>
-      <div class="tags"><span class="tag tag-red">Funil sem recaptura</span><span class="tag tag-amber">CPA potencial 40–60% menor</span></div>
+      <div class="insight-title">Remarketing — uma camada de captura ainda não explorada</div>
+      <div class="insight-body">Com 829 mil impressões no Meta e 166 mil no Google, já existe uma base significativa de usuários que tiveram contato com a marca. No setor de saúde americano, o ciclo de decisão costuma levar de 3 a 14 dias — o paciente pesquisa, pondera, consulta a família antes de agendar. Ativar remarketing para visitantes dos últimos 30 dias aproveitaria todo esse trabalho de topo de funil já realizado, com CPA estimado 40–60% menor que aquisição fria.</div>
+      <div class="tags"><span class="tag tag-red">Oportunidade de remarketing ativo</span><span class="tag tag-amber">CPA potencial 40–60% menor</span></div>
     </div>
   </div>
 </div>
 
-<!-- SECTION 4 — TERMOS DE BUSCA -->
+<!-- SECTION 3 — TERMOS DE BUSCA -->
 <div class="section">
   <div class="container">
     <div class="section-header">
-      <div class="section-number">04</div>
+      <div class="section-number">03</div>
       <div>
         <div class="section-title">Análise de termos de busca</div>
-        <div class="section-sub">O que manter, o que cortar e onde existe oportunidade escondida</div>
+        <div class="section-sub">Classificação por intenção e potencial de conversão</div>
       </div>
     </div>
 
@@ -661,11 +717,11 @@
   </div>
 </div>
 
-<!-- SECTION 5 — ESTRATÉGIA DE CONCORRENTES -->
+<!-- SECTION 4 — ESTRATÉGIA DE CONCORRENTES -->
 <div class="section">
   <div class="container">
     <div class="section-header">
-      <div class="section-number">05</div>
+      <div class="section-number">04</div>
       <div>
         <div class="section-title">Estratégia de concorrentes no Google Ads</div>
         <div class="section-sub">Anunciar para concorrentes é comum no mercado médico — mas exige critério</div>
@@ -704,43 +760,43 @@
   </div>
 </div>
 
-<!-- SECTION 6 — FUNIL -->
+<!-- SECTION 5 — FUNIL -->
 <div class="section">
   <div class="container">
     <div class="section-header">
-      <div class="section-number">06</div>
+      <div class="section-number">05</div>
       <div>
         <div class="section-title">Modelo de funil e estimativa de vazamento</div>
-        <div class="section-sub">O maior problema não está na mídia — está no que acontece depois do clique</div>
+        <div class="section-sub">Onde estão as maiores alavancas de crescimento além das campanhas</div>
       </div>
     </div>
 
     <div class="funnel-step"><span class="funnel-step-label">Impressões totais (Meta + Google estimado)</span><span class="funnel-step-val">~1.000.000+</span></div>
     <div class="funnel-step"><span class="funnel-step-label">Cliques e interações</span><span class="funnel-step-val">~17.000–18.000</span></div>
-    <div class="funnel-step"><span class="funnel-step-label">Conversões rastreadas (Google) — definição suspeita</span><span class="funnel-step-val" style="color:var(--amber)">15.617 ???</span></div>
+    <div class="funnel-step"><span class="funnel-step-label">Conversões rastreadas (Google) — a validar</span><span class="funnel-step-val" style="color:var(--amber)">15.617 (a confirmar tipo)</span></div>
     <div class="funnel-step"><span class="funnel-step-label">Leads reais chegando (estimativa Dr. Daniel: ~10/dia veias)</span><span class="funnel-step-val">~300/mês</span></div>
     <div class="funnel-step"><span class="funnel-step-label">Agendamentos confirmados (sem automação, SLA +24h)</span><span class="funnel-step-val" style="color:var(--amber)">~150/mês (50%)</span></div>
     <div class="funnel-step"><span class="funnel-step-label">Pacientes que aparecem na clínica</span><span class="funnel-step-val" style="color:var(--red)">~75–90/mês (25–30%)</span></div>
-    <p class="funnel-note">* O SLA de +24h para resposta identificado no cliente oculto é o principal responsável pela queda de ~50% entre leads e agendamentos. Resolver o atendimento pode dobrar o resultado sem aumentar o orçamento de mídia em um centavo.</p>
+    <p class="funnel-note">* O tempo de resposta ao lead é um dos maiores fatores de conversão no setor de saúde. Reduzir o SLA de atendimento pode dobrar o aproveitamento dos leads gerados pelas campanhas, sem nenhum aumento de investimento em mídia.</p>
 
     <div class="hr"></div>
 
     <div class="insight red">
-      <div class="insight-title">O leaky bucket: onde os leads estão escapando</div>
-      <div class="insight-body">A mídia está trazendo as pessoas até a porta. O problema está na porta. Lead chega pelo Instagram — resposta em +24h. Lead liga — secretária ocupada. Lead manda mensagem — sistema não permite agendamento do Brasil. A automação de atendimento (IA via WhatsApp) e a definição de um SLA de resposta de no máximo 15 minutos têm impacto direto no faturamento imediato, sem depender de nenhum ajuste de campanha.</div>
-      <div class="tags"><span class="tag tag-red">Impacto imediato no faturamento</span><span class="tag tag-amber">SLA máximo: 15 minutos</span></div>
+      <div class="insight-title">O atendimento ao lead como alavanca direta de crescimento</div>
+      <div class="insight-body">As campanhas estão cumprindo o papel de gerar interesse e trazer o lead. O próximo passo é garantir que esse lead seja atendido com rapidez — idealmente em até 15 minutos. A automação via WhatsApp e um fluxo de atendimento bem estruturado têm impacto direto no faturamento, funcionando em paralelo com qualquer otimização de campanha.</div>
+      <div class="tags"><span class="tag tag-red">Alta alavanca de conversão</span><span class="tag tag-amber">SLA máximo: 15 minutos</span></div>
     </div>
   </div>
 </div>
 
-<!-- SECTION 7 — OPORTUNIDADES INEXISTENTES -->
+<!-- SECTION 6 — OPORTUNIDADES INEXISTENTES -->
 <div class="section">
   <div class="container">
     <div class="section-header">
-      <div class="section-number">07</div>
+      <div class="section-number">06</div>
       <div>
-        <div class="section-title">Oportunidades que ainda não existem na conta</div>
-        <div class="section-sub">Recursos disponíveis nas plataformas que não foram ativados</div>
+        <div class="section-title">Próximas alavancas de crescimento</div>
+        <div class="section-sub">Próximas camadas a ativar para ampliar os resultados</div>
       </div>
     </div>
 
@@ -760,13 +816,13 @@
       <div class="opp-card">
         <div class="opp-card-icon blue">📞</div>
         <div class="opp-card-title">Extensões de anúncio (Google)</div>
-        <div class="opp-card-desc">Nenhuma extensão está configurada. Extensão de chamada com horário comercial, localização, sitelinks por serviço (veias, wellness, cosmetologia) e extensão de idioma podem elevar o CTR de 9,6% para 12–15% sem aumentar o CPC.</div>
+        <div class="opp-card-desc">Extensão de chamada com horário comercial, localização, sitelinks por serviço (veias, wellness, cosmetologia) e extensão de idioma são recursos que podem elevar o CTR de 9,6% para 12–15% sem nenhum aumento de CPC — e ainda não foram ativados na conta.</div>
         <div class="tags" style="margin-top:8px"><span class="tag tag-blue">CTR +25–55% estimado</span></div>
       </div>
       <div class="opp-card">
         <div class="opp-card-icon purple">🔁</div>
         <div class="opp-card-title">Remarketing ativo</div>
-        <div class="opp-card-desc">Nenhuma campanha de remarketing existe em nenhuma plataforma. Com o volume de tráfego já gerado, uma campanha para visitantes dos últimos 30 dias pode ter CPA 40–60% menor que aquisição fria — capturando o paciente que já pesquisou mas ainda não agendou.</div>
+        <div class="opp-card-desc">Com o volume de tráfego já gerado pelas campanhas ativas, uma campanha de remarketing para visitantes dos últimos 30 dias pode ter CPA 40–60% menor que aquisição fria — ativando pacientes que já demonstraram interesse mas ainda não agendaram.</div>
         <div class="tags" style="margin-top:8px"><span class="tag tag-purple">CPA 40–60% menor estimado</span></div>
       </div>
       <div class="opp-card">
@@ -778,21 +834,21 @@
       <div class="opp-card">
         <div class="opp-card-icon blue">💬</div>
         <div class="opp-card-title">Campanhas por serviço (Meta)</div>
-        <div class="opp-card-desc">Hoje não existe nenhuma campanha ativa de Mensagem ou Conversão no Meta para nenhum serviço específico. Veias, wellness, cosmetologia e cardiologia têm públicos, criativos e mensagens totalmente diferentes — e merecem campanhas separadas com objetivos corretos.</div>
+        <div class="opp-card-desc">Cada serviço da clínica — veias, wellness, cosmetologia, cardiologia — tem públicos, criativos e mensagens distintos. Criar campanhas de Mensagem e Conversão separadas por serviço no Meta é o próximo passo para aumentar a relevância dos anúncios e a taxa de resposta dos leads.</div>
         <div class="tags" style="margin-top:8px"><span class="tag tag-blue">Segmentação por serviço</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SECTION 8 — PLANO DE AÇÃO -->
+<!-- SECTION 7 — PLANO DE AÇÃO -->
 <div class="section">
   <div class="container">
     <div class="section-header">
-      <div class="section-number">08</div>
+      <div class="section-number">07</div>
       <div>
         <div class="section-title">Plano de ação prioritário</div>
-        <div class="section-sub">Ordenado por impacto imediato no faturamento, não por facilidade de execução</div>
+        <div class="section-sub">Sequência sugerida para maximizar resultado nas próximas semanas</div>
       </div>
     </div>
 
@@ -800,7 +856,7 @@
       <div class="action-num">1</div>
       <div class="action-content">
         <div class="action-title">Auditar e corrigir a tag de conversão do Google</div>
-        <div class="action-desc">Acessar o Gerenciador de Eventos do Google Ads e identificar exatamente o que está sendo contado como "conversão". Redefinir para um evento de alta intenção: clique no botão de telefone, envio do formulário de contato, ou início de conversa no WhatsApp. Sem isso, todas as decisões de orçamento são cegas.</div>
+        <div class="action-desc">Acessar o Gerenciador de Eventos do Google Ads e identificar exatamente o que está sendo contado como "conversão". Redefinir para um evento de alta intenção: clique no botão de telefone, envio do formulário de contato, ou início de conversa no WhatsApp. Com essa clareza, as decisões de orçamento e escala ficam muito mais embasadas.</div>
         <div class="action-meta">
           <span class="tag tag-red">Prioridade máxima</span>
           <span class="tag tag-gray">Prazo: 48h</span>
@@ -813,7 +869,7 @@
       <div class="action-num">2</div>
       <div class="action-content">
         <div class="action-title">Adicionar palavras-chave negativas no Google</div>
-        <div class="action-desc">Excluir imediatamente: sistemas hospitalares concorrentes (Houston Methodist, Memorial Hermann), termos de especialidades fora do escopo (pediatric cardiology, cardiothoracic surgeon), e serviços não oferecidos (cardiac rehab). Isso para o sangramento de budget em cliques que nunca convertem.</div>
+        <div class="action-desc">Excluir imediatamente: sistemas hospitalares concorrentes (Houston Methodist, Memorial Hermann), termos de especialidades fora do escopo (pediatric cardiology, cardiothoracic surgeon), e serviços não oferecidos (cardiac rehab). Isso concentra o orçamento nos termos com real potencial de conversão.</div>
         <div class="action-meta">
           <span class="tag tag-red">Prioridade máxima</span>
           <span class="tag tag-gray">Prazo: 48h</span>
@@ -878,7 +934,7 @@
       <div class="action-num">7</div>
       <div class="action-content">
         <div class="action-title">Ativar remarketing no Meta e Google</div>
-        <div class="action-desc">Criar público de remarketing com visitantes do site nos últimos 30 dias (pixel Meta e tag Google). Criar campanha dedicada com mensagem de "retorno": "Você pesquisou sobre saúde cardiovascular. O Dr. Daniel está disponível para uma avaliação esta semana." CPA esperado: 40–60% abaixo de aquisição fria.</div>
+        <div class="action-desc">Criar público de remarketing com visitantes do site nos últimos 30 dias (pixel Meta e tag Google). Criar campanha dedicada com mensagem de "reengajamento": "Você pesquisou sobre saúde cardiovascular. O Dr. Daniel está disponível para uma avaliação esta semana." CPA esperado: 40–60% abaixo de aquisição fria.</div>
         <div class="action-meta">
           <span class="tag tag-amber">Prioridade média-alta</span>
           <span class="tag tag-gray">Prazo: 14–21 dias</span>
@@ -915,11 +971,383 @@
   </div>
 </div>
 
+</div><!-- /pane-report -->
+
+<!-- ══════════ PANE: MEETING ══════════ -->
+<div class="tabpane" id="pane-meeting">
+
+<!-- CONTEXTO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">R1</div>
+      <div>
+        <div class="section-title">Reunião de onboarding — resumo prático</div>
+        <div class="section-sub">O que ficou decidido, quem faz o quê e o que precisa da clínica para destravar</div>
+      </div>
+    </div>
+    <p class="meet-lead">Call de kick-off entre a equipe da Foco (Pablo — account manager, Tainá — atendimento/estratégia, Ana Moutinho — tráfego) e o Garcia Medical Group (Dr. Daniel Garcia e Andréia). Abaixo, o essencial destilado da conversa em pontos acionáveis. A transcrição completa está no fim desta aba.</p>
+
+    <div class="fact-grid">
+      <div class="fact-card"><div class="fact-label">Público-alvo prioritário</div><div class="fact-value">Comunidade latina de Houston · espanhol › português › americano</div></div>
+      <div class="fact-card"><div class="fact-label">Renda anual média</div><div class="fact-value">~US$ 80 mil (faixa de US$ 60k a 250k+)</div></div>
+      <div class="fact-card"><div class="fact-label">Perfil clínico</div><div class="fact-value">40+ anos · cardiovascular, veias, wellness, estética</div></div>
+      <div class="fact-card"><div class="fact-label">Objetivo declarado</div><div class="fact-value">Trazer o lead para dentro do consultório e vender os demais serviços</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- O GARGALO CENTRAL -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">R2</div>
+      <div>
+        <div class="section-title">O gargalo nº 1 identificado na própria call</div>
+        <div class="section-sub">Não é a mídia — é o que acontece depois que o lead chega</div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <div class="highlight-box-title">Leads chegam, mas ninguém fecha a tempo</div>
+      <div class="highlight-box-body">Ontem chegaram ~10 leads de veias; 5 marcaram avaliação. Mas o próprio Dr. Daniel e a Andréia relataram que <strong>um lead pediu retorno e ficou dias sem resposta</strong> ("ninguém me ligou e eu estou querendo marcar"). O cliente oculto da Foco confirmou: <strong>mais de 24h para responder no Instagram.</strong> A prioridade acordada foi clara — <strong>ajustar o atendimento final ANTES de escalar novas campanhas</strong>, "senão não adianta ter um monte de gente chegando e não atender."</div>
+    </div>
+  </div>
+</div>
+
+<!-- AÇÕES PRIORITÁRIAS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">R3</div>
+      <div>
+        <div class="section-title">Ações práticas saídas da reunião</div>
+        <div class="section-sub">Ordenadas por urgência acordada entre as partes</div>
+      </div>
+    </div>
+
+    <div class="prio-card urgent">
+      <div class="prio-card-head">
+        <span class="prio-card-title">1 · Resolver o atendimento / tempo de resposta do lead</span>
+        <span class="owner-tag">Foco + Michelle</span>
+      </div>
+      <div class="prio-card-body">Implementar <b>WhatsApp como canal oficial</b> (público latino usa muito, hoje é só ligação/texto) e IA de atendimento centralizando todos os leads num só lugar. Especialista em atendimento da Foco vai treinar a equipe e desenvolver script personalizado. <b>Meta: fechamento na hora, agendamento imediato.</b></div>
+    </div>
+
+    <div class="prio-card urgent">
+      <div class="prio-card-head">
+        <span class="prio-card-title">2 · Destravar o acesso ao prontuário para agendar na hora</span>
+        <span class="owner-tag">Foco (VPN)</span>
+      </div>
+      <div class="prio-card-body">O prontuário eletrônico dos EUA <b>não abre fora do país</b>, então a Michelle (no Brasil) não consegue agendar direto. Ação acordada: <b>Foco ajuda a configurar VPN</b> para dar acesso à agenda e permitir agendamento imediato do paciente.</div>
+    </div>
+
+    <div class="prio-card">
+      <div class="prio-card-head">
+        <span class="prio-card-title">3 · Identidade visual unificada (prioridade nº 1 do Dr. Daniel)</span>
+        <span class="owner-tag">Produtora Foco</span>
+      </div>
+      <div class="prio-card-body">Reestruturar a identidade cobrindo todos os braços: <b>Garcia Heart, Wellness, Aesthetic, Radiology, Education</b>. Designer faz entrevista específica. <b>Prazo: 30 dias de desenvolvimento + 15 de refação.</b> Dr. Daniel precisa reservar agenda para essa entrevista.</div>
+    </div>
+
+    <div class="prio-card mid">
+      <div class="prio-card-head">
+        <span class="prio-card-title">4 · Landing page + fluxo de review (água/café + QR Code)</span>
+        <span class="owner-tag">Foco</span>
+      </div>
+      <div class="prio-card-body">Fluxo pedido pelo Dr. Daniel: QR Code → landing page que <b>direciona para o Google Review (5 estrelas)</b> → depois o waiver (termo de consentimento) → então libera água/café. Dr. Daniel considerou "muito tranquilo de fazer".</div>
+    </div>
+
+    <div class="prio-card mid">
+      <div class="prio-card-head">
+        <span class="prio-card-title">5 · Consultoria de tráfego (validar antes de escalar)</span>
+        <span class="owner-tag">Ana Moutinho</span>
+      </div>
+      <div class="prio-card-body">Reunião dedicada de tráfego com a Andréia (tarde, após 17h Houston / 19h30 BR). Andréia passa <b>acesso à BM</b>. Validar campanha de veias atual, <b>ROI e taxa de conversão</b> antes de abrir novas campanhas para wellness, coração e estética.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DECISÕES / PRÓXIMOS PASSOS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">R4</div>
+      <div>
+        <div class="section-title">Decisões fechadas &amp; próximos passos</div>
+        <div class="section-sub">Checklist do que sai da reunião</div>
+      </div>
+    </div>
+    <ul class="decision-list">
+      <li>Andréia <b>passa o acesso da BM</b> para a Ana Moutinho.</li>
+      <li>Reunião de tráfego marcada para <b>semana que vem (dia 29 ou 30, período da tarde)</b> — horário ajustado no grupo.</li>
+      <li>Pablo sobe <b>link do Drive no grupo</b>; clínica envia todo material dos braços (incl. apresentação de cosmetologia).</li>
+      <li>Dr. Daniel envia <b>contato da Michelle</b> para criar grupo dedicado de atendimento/script.</li>
+      <li>Clínica corrige <b>horário no Google</b> (é 9h–17h de seg a sex, sem exceção na sexta).</li>
+      <li>Clínica envia <b>datas importantes do 2º semestre</b> (aniversário da clínica etc.) para o planejamento.</li>
+      <li>Foco desenvolve o <b>termo de consentimento (waiver)</b> da água/café.</li>
+      <li>Instagram: respostas devem vir <b>do perfil da clínica</b> (hoje muitas vêm de parceiros/terceiros).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- DIFERENCIAIS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">R5</div>
+      <div>
+        <div class="section-title">Diferenciais da clínica (para usar na comunicação)</div>
+        <div class="section-sub">O que o Dr. Daniel destacou como vantagem competitiva</div>
+      </div>
+    </div>
+    <div class="opp-grid">
+      <div class="opp-card">
+        <div class="opp-card-icon blue">🗣️</div>
+        <div class="opp-card-title">Atendimento em espanhol</div>
+        <div class="opp-card-desc">Médico fala 3 línguas; poucas clínicas em Houston atendem a comunidade latina na própria língua.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon green">💳</div>
+        <div class="opp-card-title">Acessibilidade de pagamento</div>
+        <div class="opp-card-desc">Parcelamento em entrada + 6x — fator forte de atração citado como diferencial.</div>
+      </div>
+      <div class="opp-card">
+        <div class="opp-card-icon purple">⚡</div>
+        <div class="opp-card-title">Rapidez no agendamento</div>
+        <div class="opp-card-desc">Exames e procedimentos auxiliares (ultrassom etc.) agendados e feitos rapidamente na própria clínica.</div>
+      </div>
+    </div>
+    <p class="meet-lead" style="margin-top:20px;margin-bottom:0;"><b>Insight de venda:</b> ~70% dos pacientes chegam por referência médica com um problema instalado. Ao entrar na clínica, descobrem os demais serviços (laser em veias, botox, soroterapia, perda de peso, podologia) — é aí que a taxa de conversão sobe. Por isso a estratégia de <b>"bombardear" o paciente com todos os serviços</b> já na entrada e nas plataformas.</p>
+  </div>
+</div>
+
+<!-- TRANSCRIÇÃO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">R6</div>
+      <div>
+        <div class="section-title">Transcrição completa da reunião</div>
+        <div class="section-sub">Registro integral para consulta</div>
+      </div>
+    </div>
+    <div class="transcript-box" id="transcript"></div>
+  </div>
+</div>
+
+</div><!-- /pane-meeting -->
+
+<!-- ══════════ PANE: TRAFFIC MEETING ══════════ -->
+<div class="tabpane" id="pane-traffic">
+
+<!-- CONTEXTO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T1</div>
+      <div>
+        <div class="section-title">Reunião de tráfego — consultoria estratégica</div>
+        <div class="section-sub">Primeira sessão de consultoria de mídia paga (Ana Moutinho) com a Andréia e a Foco</div>
+      </div>
+    </div>
+    <p class="meet-lead">Sessão dedicada de tráfego, apresentada por <b>Ana Moutinho</b> (gestora de tráfego da Foco), com <b>Andréia</b> (responsável por conteúdo, estratégia e atendimento na clínica) e mediação da Tainá/Pablo. A Ana analisou as contas de Meta e Google Ads e trouxe recomendações. O modelo combinado é de <b>consultoria/apoio</b> — a Foco ajuda a Andréia a enxergar pontos além do que ela já via e a aplicar de forma prática, acompanhando a efetividade dos testes juntos, não assumindo a operação.</p>
+
+    <div class="fact-grid">
+      <div class="fact-card"><div class="fact-label">Investimento atual</div><div class="fact-value">~R$ 1.500/mês · considerado baixo para o tipo de serviço/mercado</div></div>
+      <div class="fact-card"><div class="fact-label">Origem do tráfego</div><div class="fact-value">86% via celular (mobile-first)</div></div>
+      <div class="fact-card"><div class="fact-label">Divisão de canais</div><div class="fact-value">Google Ads → público americano · Redes sociais → público latino</div></div>
+      <div class="fact-card"><div class="fact-label">Concorrência real</div><div class="fact-value">Não são outras clínicas — são os hospitais (US$ 2–3 mil/visita)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTA CONVERSÃO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T2</div>
+      <div>
+        <div class="section-title">Alerta técnico levantado na call</div>
+        <div class="section-sub">Taxa de conversão acima de 100% = medição furada</div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <div class="highlight-box-title">A conversão está sendo contada errada</div>
+      <div class="highlight-box-body">A Ana identificou <strong>taxa de conversão acima de 100%</strong> em uma das regiões — sinal de que a tag provavelmente está <strong>contando visualização de página em vez de clique no botão/ação real</strong>. Há um vazamento na medição que precisa ser corrigido antes de tomar decisões de verba baseadas nesses números. Ação: revisar a configuração da tag de conversão.</div>
+    </div>
+  </div>
+</div>
+
+<!-- AÇÕES PRÁTICAS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T3</div>
+      <div>
+        <div class="section-title">Ações práticas decididas na reunião</div>
+        <div class="section-sub">O que será testado e reestruturado nas contas</div>
+      </div>
+    </div>
+
+    <div class="prio-card urgent">
+      <div class="prio-card-head">
+        <span class="prio-card-title">1 · Corrigir a medição de conversão</span>
+        <span class="owner-tag">Ana / Foco</span>
+      </div>
+      <div class="prio-card-body">Revisar a tag que está gerando conversão &gt;100% (provável contagem de pageview em vez de clique real). Sem isso, todo o resto da análise fica comprometido.</div>
+    </div>
+
+    <div class="prio-card urgent">
+      <div class="prio-card-head">
+        <span class="prio-card-title">2 · Testar WhatsApp como canal (até 7 dias)</span>
+        <span class="owner-tag">Foco + clínica</span>
+      </div>
+      <div class="prio-card-body">Se a pessoa da clínica tiver disponibilidade, <b>iniciar teste de campanha com WhatsApp em até 7 dias</b> para o público latino (que usa muito o app). Integrar o atendimento para não sobrecarregar. Manter ligação/texto para o público americano.</div>
+    </div>
+
+    <div class="prio-card">
+      <div class="prio-card-head">
+        <span class="prio-card-title">3 · Reestruturar campanhas de Google por intenção</span>
+        <span class="owner-tag">Ana / Foco</span>
+      </div>
+      <div class="prio-card-body">Separar em estruturas dedicadas: <b>campanha institucional</b> (marca "Dr. Daniel", já tem volume relevante na região), <b>campanha por comunidade/idioma</b> (termos em espanhol e português, não só inglês) e <b>campanha de concorrentes/hospitais</b> (o público já vê a clínica como alternativa a hospital — descrição específica para esse contexto).</div>
+    </div>
+
+    <div class="prio-card">
+      <div class="prio-card-head">
+        <span class="prio-card-title">4 · Limpar termos com negativação</span>
+        <span class="owner-tag">Ana / Foco</span>
+      </div>
+      <div class="prio-card-body">Negativar termos de <b>"clínica barata"/promoção</b> (posicionamento é premium/especialista, não preço), serviços que a clínica não oferece (ex.: pediatria) e concorrentes irrelevantes. Enfatizar diferenciais na descrição antes mesmo do clique.</div>
+    </div>
+
+    <div class="prio-card">
+      <div class="prio-card-head">
+        <span class="prio-card-title">5 · Criar campanha dedicada de remarketing</span>
+        <span class="owner-tag">Ana / Foco</span>
+      </div>
+      <div class="prio-card-body">Estrutura separada só para remarketing — recuperar quem clicou (Meta e Google) e não fechou. Nos EUA, o CTA de remarketing costuma sair <b>40–50% mais barato</b> que aquisição fria. Sempre relembrando marca e diferenciais.</div>
+    </div>
+
+    <div class="prio-card mid">
+      <div class="prio-card-head">
+        <span class="prio-card-title">6 · Separar Wellness / Estética do restante</span>
+        <span class="owner-tag">Ana / Foco</span>
+      </div>
+      <div class="prio-card-body">Wellness e estética têm público diferente (mais jovem, mais mulher) e <b>exigem landing page própria</b> — não faz sentido misturar com cardiologia/veias no mesmo conjunto. Estruturar campanhas específicas por serviço conforme forem entrando.</div>
+    </div>
+
+    <div class="prio-card mid">
+      <div class="prio-card-head">
+        <span class="prio-card-title">7 · Otimização mobile + velocidade do site</span>
+        <span class="owner-tag">Foco (interno)</span>
+      </div>
+      <div class="prio-card-body">Com 86% mobile, priorizar otimização para celular e velocidade de carregamento — o novo site já deve nascer dentro desses padrões. "De nada adianta o melhor anúncio se o site demora a carregar."</div>
+    </div>
+
+    <div class="prio-card mid">
+      <div class="prio-card-head">
+        <span class="prio-card-title">8 · Priorizar extensões de anúncio antes da chamada</span>
+        <span class="owner-tag">Ana / Foco</span>
+      </div>
+      <div class="prio-card-body">Ativar extensões (localização, site, etc.) primeiro. A <b>extensão de chamada fica em espera</b> até validar que o atendimento telefônico interno está funcionando — não adianta gerar ligação que ninguém atende.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESTRATÉGIA DE MÍDIA -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T4</div>
+      <div>
+        <div class="section-title">Diretrizes de gestão de mídia acordadas</div>
+        <div class="section-sub">Como as contas passam a ser conduzidas</div>
+      </div>
+    </div>
+    <ul class="decision-list">
+      <li><b>Não desativar/recriar campanhas no Meta.</b> Após as atualizações recentes (pós-Andromeda), o aprendizado fica no conjunto de anúncios — recriar zera o aprendizado. Trocar criativos dentro do conjunto aproveita o que já foi aprendido.</li>
+      <li><b>Atenção ao limite de aprendizado:</b> o conjunto precisa de ~50 conversões/eventos para sair do aprendizado. Com muitos conjuntos e orçamento baixo, nenhum atinge isso — usar aprendizado limitado quando necessário.</li>
+      <li><b>Transição gradual Meta → Google se a conversão for maior no Google:</b> subir um pouco no Google, reduzir um pouco no Meta, medir a reação, sem nunca zerar o Meta.</li>
+      <li><b>Avaliar aumento de orçamento:</b> Andréia mantém verba enxuta por controle; a Foco vai avaliar e recomendar aumento (a clínica quer crescer e abrir novas unidades).</li>
+      <li><b>Incluir público brasileiro em Houston</b> (~20 mil brasileiros) — atendimento em português como diferencial, usando a equipe que fala português na clínica.</li>
+      <li><b>Ampliar geografia:</b> pacientes viajam 1–2h (Austin, San Antonio); segmentar cidades acessíveis com alta concentração latina, além do público fiel que segue o Dr. Daniel.</li>
+      <li><b>Considerar PMax</b> pela boa distribuição em múltiplas mídias, desde que o atendimento suporte o volume de contatos gerado.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- DEPENDE DA CLÍNICA -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T5</div>
+      <div>
+        <div class="section-title">O que depende da clínica (gargalo do fundo do funil)</div>
+        <div class="section-sub">As 3 últimas etapas do funil dependem do time interno, não do tráfego</div>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <div class="highlight-box-title">"O tráfego leva, mas quem fecha é o atendimento"</div>
+      <div class="highlight-box-body">A Ana foi direta: as três últimas etapas do funil (resposta, agendamento, comparecimento) dependem do time da clínica. Hoje o SLA é ruim — <strong>respostas levam horas ou mais de 24h</strong>, agravado pela diferença de fuso Brasil–Houston. É preciso acompanhar CRM/agendamento e o tempo de resposta, integrar os canais e resolver o atendimento final. <strong>Sem isso, aumentar verba só desperdiça lead.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRÓXIMOS PASSOS -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T6</div>
+      <div>
+        <div class="section-title">Próximos passos combinados</div>
+        <div class="section-sub">Encaminhamentos da reunião</div>
+      </div>
+    </div>
+    <ul class="decision-list">
+      <li>Foco disponibiliza o <b>material da consultoria no grupo</b> e inclui a <b>Michelle</b> para o alinhamento de atendimento/pesquisa.</li>
+      <li>Andréia envia à Ana o <b>link para validação dos termos</b> discutidos (institucional, comunidades, concorrentes, negativas).</li>
+      <li>Definir <b>acesso da Michelle</b> à agenda/sistema para viabilizar agendamento e coleta de dados de origem do lead.</li>
+      <li>Iniciar <b>teste de WhatsApp em até 7 dias</b> (se houver disponibilidade da clínica).</li>
+      <li>Levar à clínica a questão do <b>SLA e fluxo de fechamento</b> para aprimorar as respostas.</li>
+      <li>Dúvidas seguem pelo grupo; consultoria é <b>prática e acompanhada</b> (testa, mede o que funcionou e ajusta).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TRANSCRIÇÃO -->
+<div class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-number">T7</div>
+      <div>
+        <div class="section-title">Transcrição da reunião de tráfego</div>
+        <div class="section-sub">Registro consolidado em português (áudio com falhas de conexão foi limpo para leitura)</div>
+      </div>
+    </div>
+    <div class="transcript-box" id="transcript-traffic"></div>
+  </div>
+</div>
+
+</div><!-- /pane-traffic -->
+
 <!-- FOOTER -->
 <div class="footer">
   <strong>Garcia Medical Group — Consultoria Estratégica de Tráfego Pago</strong><br>
   Documento preparado com base na análise direta das contas Meta Ads e Google Ads · Houston, TX · Julho 2026
 </div>
 
+
+<script>
+  function showTab(name){
+    document.querySelectorAll('.tabpane').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('pane-'+name).classList.add('active');
+    document.getElementById('tab-'+name).classList.add('active');
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+  document.getElementById('transcript').textContent = "Bom dia. Olá, Andréia, bom dia, tudo bem? Tudo ótimo. E essa blusa do Brasil aí, bom dia, Andréia, tá joia? Estamos todos animados, né? Bom dia, doutor Daniel. Bom dia. Tudo bem? Vamos dar início. Estava comemorando com a Andréia aqui, doutor. Ela com a blusa do Brasil. Estou comemorando com ela o nosso jogo ontem. Muito bonito. E agora em Houston, né? Vamos lá, doutor, muito prazer, eu sou o Pablo Henrique, eu sou o Coach Manager, vou ser o ponto de conexão entre vocês e a Foco. Vou apresentar a minha tela aqui. Como vai funcionar agora? A gente vai fazer o onboard de vocês, apresentar quais serão os nossos papéis, entender mais sobre o negócio e ter direcionamento para as estratégias.\n\n[Dr. Daniel] Eu tô apertado de compromisso, cara, tem como a gente ir direto ao ponto, começar direto falando sobre o que a gente precisa alinhar com vocês, pra aproveitar mais o tempo? Já tenho outro compromisso daqui meia hora.\n\n[Tainá] Doutor, esse é o momento da agência conhecer você, entender sua história, como você mede seus resultados, para conseguir entregar algo de valor. Precisamos dessa compreensão do seu negócio.\n\n[Dr. Daniel] Nós somos uma empresa inovadora, jovem, mas crescendo muito no mercado de Houston, porque temos um diferencial: a comunicação em espanhol. Eu falo espanhol fluente, falo três línguas, e o mercado de Houston é dominado pela comunidade latina. 90% dos nossos posts estão em espanhol ou português. O público americano vem também, mas o foco maior é a comunidade latina. 50% da população de Houston é latina e só fala espanhol; eles buscam um médico que fale espanhol. O foco é o latino, o espanhol, o português, e depois o americano.\n\nComeçamos como Garcia Heart e agora estamos subindo para o Garcia Medical Group. Dentro dele temos vários ramos: Garcia Heart (coração e vascular, chave principal), Garcia Wellness (perda de peso, vitaminas, soroterapia), Garcia Aesthetic & Wellness (cosmética — o doutor Ivan está em parceria nesse lado), estamos abrindo o Garcia Radiology (ultrassons, exames dentro da clínica) e o Garcia Education (imersão para médicos revalidarem e encontrarem oportunidades aqui — entra mais no meu Instagram pessoal).\n\n[Tainá] A Education é em parceria com o doutor Ivan? [Dr. Daniel] Já tem o meu programa e o do Ivan, plataformas separadas, a gente vai intercalar/contribuir, mas são duas coisas separadas.\n\n[Tainá] Preciso entender com profundidade o Wellness: missão, público, ticket. [Dr. Daniel] No Garcia Heart, carro-chefe, público de 40 anos pra frente com problema cardiovascular instalado ou querendo prevenção. Wellness: população buscando longevidade, perda de peso, soroterapia, nutrição — homem e mulher. Cosmetologia: mais focada em mulher — varizes (laser e espuma), pele com laser, peeling. Depois meu time de cosmetologia conversa com vocês para dar mais insight.\n\n[Tainá] Se tiverem documentação/apresentação, seria ótimo compartilhar, principalmente pro site — como traduzir todos esses braços se não temos conhecimento profundo. Pablo vai subir um link do Drive no grupo.\n\n[Tainá] Você acredita que podemos seguir a apresentação e a Andréia dar continuidade? Senão peço um segundo momento com a agenda tranquila, principalmente para o planejamento de tráfego — vimos que não há campanha ativa.\n\n[Dr. Daniel] O projeto que quero desenvolver é o de landing pages. Vamos oferecer água e café na clínica. Aqui nos EUA, tudo precisa estar respaldado legalmente — a pessoa assina um waiver, termo de consentimento, não responsabiliza a clínica. A jogada: a pessoa escaneia um QR Code, acessa o waiver, aceita os termos. Mas o pulo do gato: antes disso, uma landing page que direciona para o nosso Google, onde a pessoa faz uma review de 5 estrelas. Depois da review, vai para o waiver, assina, e liberamos a água e o café.\n\n[Pablo/Tainá] Isso é muito tranquilo de fazer, pode passar. Aqui na Foco temos outros braços: a produtora, a Foco Market, a Foco Academy, a Health e a Exclusive.\n\n[Tainá] Da produtora: reestruturação da identidade visual — nosso designer faz entrevista específica com você. Precisamos saber se é a logo principal ou os braços, porque a identidade precisa ser fluida para todos. Prazo: 30 dias de desenvolvimento, 15 de refação.\n\nFocoMarket: planejamento de tráfego. Nosso time olhou e não há campanhas ativas no Meta. [Dr. Daniel/André] Não, estamos com campanhas ativas, quem faz o tráfego sou eu, tanto Google Ads quanto Meta Ads. [Tainá] Vocês podem ter pego um gap de troca de conta. A Ana Moutinho vai entrar em contato. Faremos consultoria junto com vocês nas campanhas, análise de métricas, reestruturação do site, IA de atendimento (briefing preenchido; o desenvolvedor vai levantar dúvidas de alinhamento), e acompanhamento de tráfego com a Ana e a Andréia.\n\n[Dr. Daniel] Queria participar da primeira reunião de tráfego para entender a proposta, ver se esse serviço vai fazer diferença ou não, já que estamos bem estabelecidos.\n\n[conexão da Tainá caiu momentaneamente]\n\n[Pablo] Doutor, ela queria alinhar uma data e horário para essa conversa de tráfego. [Dr. Daniel] Pode ser semana que vem, quando o mês virar, porque teremos o relatório do último mês pronto. [Andréia] Pra mim é melhor à tarde, de manhã minha filha está em casa/escola. [Dr. Daniel] Minha tarde tem que ser depois das 5 daqui, 7/7h30 da noite no Brasil, porque faço consultório até 17h30 Houston. Ajustamos o horário no grupo.\n\n[Tainá] Entre aumentar reconhecimento de marca e gerar novos pacientes — você já tem reconhecimento em Houston; o intuito é trazer novos leads. Qual a prioridade? [Dr. Daniel] Primeiro, identidade visual — os pacientes me encontram pelo YouTube (canal novo com vídeos educativos), Google, Facebook, Instagram; precisa ter identidade e mostrar disponibilidade e atendimento rápido, porque o paciente reclama da demora. A questão da língua, o espanhol, é nossa maior identidade. O objetivo é a pessoa comparecer fisicamente no consultório — ali vendemos todos os serviços. A conversão ideal é 100%.\n\n[Tainá] Missão, visão, valores e como mede o sucesso? [Dr. Daniel] Missão: atendimento humanizado, rápido, na língua que a pessoa entende melhor. Visão: inovadora, empresa jovem com planejamento de crescimento; parcerias com a Câmara de Comércio Hispana, cônsules gerais; Houston é a 3ª maior cidade dos EUA, queremos crescer. Valores: cristão, comunicação e acessibilidade. Meço o sucesso pelo maior número de pacientes, crescimento do público e faturamento, e engajamento nas redes.\n\n[Tainá] Sobre produto, agenda, metas, script, formas de pagamento e ticket — no Google o horário aparece sexta 9h-12h. [Dr. Daniel] No começo fazíamos até meio-dia na sexta; hoje é 9h-17h de segunda a sexta, o André atualiza.\n\nFormas de pagamento: à vista e parcelamento — é entrada + 6x. [Tainá] Forma de pagamento é um dos fatores que mais atrai clientes. Ticket médio e público A/B/C bem definidos ajudam a direcionar campanhas.\n\n[Tainá] Qual perfil de maior valor você quer atrair? [Dr. Daniel] O paciente que busca cuidado — prevenção e tratamento. Prevenção é ~30%. Trabalhamos muito com referimento: o médico geral encaminha para mim, especialista. Quando o paciente entra, vê os outros serviços (laser nas pernas, botox, soroterapia, perda de peso, podologia) e passa a buscar mais — isso gera a maior taxa de conversão. Por isso é importante mostrar todos os serviços e \"bombardear\" o cliente na entrada, além de atrair quem já busca ativamente o serviço.\n\n[Dr. Daniel/André] Na parte de tráfego, foco maior nos últimos dois meses em veias — começou um plano de veias, ontem chegaram ~10 leads, foco no público que fala espanhol. A expectativa é abrir o leque para veias, wellness, coração. Cosmetologia ainda não começamos. Queremos validar a campanha atual, ver ROI, taxa de conversão. Dos 10 leads de ontem, 5 marcaram avaliação de veias.\n\n[André/Dr. Daniel] O gargalo maior é depois que chega: contato, comunicação, fazer a pessoa fechar. Não temos automação. Falta social selling ativo. Teve um cliente que passou o telefone e disse \"ninguém me ligou e eu quero marcar\", e não foi respondido. Esse gargalo é o mais urgente, antes de ativar novas campanhas — não adianta ter gente chegando e não atender. Foco: ajustar primeiro o atendimento final, junto com o tráfego.\n\n[Tainá] Sobre concorrentes e diferencial? [Dr. Daniel] Somos mais acessíveis, temos campanha ativa, precisamos mostrar mais fechamento e melhorar o atendimento. Diferencial: acessibilidade, pagamento/parcelamento, a língua (médico atende na sua língua), rapidez no agendamento e nos serviços (ultrassom e exames auxiliares feitos ali). [Andréia] Hoje o contato é por telefone e texto; o latino usa muito o WhatsApp e não temos implementado. Não há fechamento/agendamento pela rede social — a pessoa passa o telefone e alguém liga.\n\n[Tainá] Sobre a IA de atendimento: direcionamos só o lead do tráfego ou todos do WhatsApp? [Dr. Daniel] A campanha só dá pra fazer com WhatsApp (não SMS). Vamos pegar uma pessoa da equipe para validar os leads. Uma plataforma que junte tudo num lugar para o atendimento ter visão geral. [Tainá] Nossa especialista em atendimento treina o time e desenvolve o script personalizado — quanto antes você definir essa pessoa, melhor. [Dr. Daniel/André] Seria a Michelle, que responde o Instagram hoje. [Tainá] Vou pegar o contato, criar um grupo. A Michelle conversa com a especialista para o alinhamento e script.\n\n[Tainá] Fizemos um cliente oculto: perguntamos e só recebemos resposta mais de 24h depois, pelo Instagram. Esse SLA é ruim; o paciente tem imediatismo, tem que fechar na hora e colocar no sistema rápido. [Dr. Daniel] Um problema: usamos prontuário eletrônico dos EUA, e o sistema não funciona fora dos EUA, então a Michelle não consegue agendar imediatamente. [Tainá] E instalar um VPN? [Dr. Daniel] Isso ajudaria — a Michelle tem acesso, mas na casa dela não conseguiu acessar. Vocês podem ajudar com o VPN para ela agendar já naquele momento.\n\n[Tainá] Renda média do público? [Dr. Daniel] Renda anual de US$ 60 mil a mais de US$ 250 mil; média ~US$ 80 mil/ano. [Tainá] Têm CRM? [Dr. Daniel] Não. Planilha com leads? Tem o prontuário do paciente, mas não a parte financeira. Talvez criar uma landing page para qualificar quem entra em contato. [Andréia] Já subi campanha com Lead Ads, então já tem lista com nome e contato.\n\n[Tainá] Sobre o futuro: o crescimento buscado é dentro do atendimento da clínica (base, script, personalização). Estratégias: assessoria, IA, website, landing page. Atendentes presenciais: duas secretárias que também atendem ligações. Enviem as datas importantes do 2º semestre (aniversário da clínica etc.).\n\n[Tainá] No Instagram, muitas respostas vêm de parceiros/terceiros — o ideal é a resposta vir do perfil da clínica, com retorno rápido, para gerar conexão. A Michelle dará esses retornos. [Dr. Daniel] A Michelle já faz isso e tem experiência, continuamos com ela.\n\n[Dr. Daniel] Preciso sair da ligação. Resumo: Pablo disponibiliza o link do Drive; clínica sobe os materiais; contato da Michelle no grupo; termo da água/café; Andréia passa acesso da BM para a Ana. [Tainá] Marcamos reunião semana que vem — a Ana Moutinho com a Andréia, à tarde, horário ajustado no grupo. Muitíssimo obrigada, bom trabalho.";
+  document.getElementById('transcript-traffic').textContent = "[Abertura] Boa tarde a todos. Este é o primeiro contato dedicado ao tráfego. Apresentamos a Ana Moutinho, da nossa equipe de tráfego. Como conversamos antes, faremos uma consultoria — jogando junto com vocês a parte de mídia paga. Recebemos o material que vocês enviaram; a Ana fez uma análise do que está sendo feito. Este momento é para vocês se conhecerem e conversarmos sobre estratégia, o que está sendo realizado, perspectivas futuras e pontos de melhoria. Como vocês estão à frente, já têm uma percepção; queremos alinhar para a Ana entender melhor como está a execução e como pode ajudar com a gestão estratégica. A Tainá (Coach/Cloud Manager) também contribui.\n\n[Obs.: houve várias quedas e travamentos de conexão durante a call.]\n\n[Ana] A ideia não é gerar competição dentro da conta, e sim levantar pontos de discussão. Comparamos o histórico das contas, tanto Google quanto Meta. Confirmando: você (Andréia) faz o tráfego desde o início, não é substituição. Isso ajuda, porque podemos puxar o histórico e discutir detalhes.\n\n[Ana] O investimento é parecido entre as contas. Um ponto que já chamou atenção: em uma das regiões, a taxa de conversão apareceu acima de 100%. Isso indica um problema de medição — provavelmente a tag está contando visualização da página em vez do clique no botão/ação real. Ou seja, tem um vazamento na conversão. Vamos deixar o plano de ação um pouco de lado nesse ponto até corrigir, porque não dá pra decidir verba com número furado.\n\n[Ana → Andréia] Você consegue trazer a informação sobre localidade/cidade? Essa conversão está concentrada numa única região ou se repete em outras? Você trabalha com alguma planilha de acompanhamento por local/público? [Andréia] Não tenho planilha nem esse dado detalhado na plataforma; é mais pela localidade mesmo.\n\n[Ana] De maneira geral, o público majoritário é latino e concentrado. Quando amplia o raio, o público também amplia? [Andréia] Acredito que sim, dá pra ampliar — inclusive para cidades próximas mas não tão próximas, desde que acessíveis. Nos EUA as pessoas viajam 1–2h quando confiam no médico. O Dr. Daniel atende gente de Houston, mas também de Austin, San Antonio. Ele já foi reconhecido até em Nova York por seguidores. Então dá pra atingir esse público fiel, que nem sempre converte na hora, mas acompanha.\n\n[Andréia] O diferencial da clínica é o atendimento personalizado e exclusivo ao público latino. No Texas, só ~10% dos médicos falam espanhol, e o público latino é ~50% de Houston. Se você chega numa clínica comum, não é bem atendido na sua língua. Na rede social o foco é todo no público latino (conteúdo em espanhol; de vez em quando inglês/português), porque são eles que mais interagem. No Google Ads focamos mais no público americano, porque ele busca por esse meio. Mantemos essa divisão de canais.\n\n[Ana] E o acompanhamento de quem vem do tráfego, o time interno repassa pra você? [Andréia] Hoje não temos isso. A necessidade já foi trazida. Hoje é tudo muito superficial — \"gerou ligação, gerou conversa\", mas não sabemos quem fechou nem de onde veio. Não há automação; faz pouco tempo (1–2 meses) que a Michelle começou o atendimento direto. Antes o CTA final sempre era \"ligue pra gente\", e isso sempre foi um problema. A Michelle, no Brasil, olha as mensagens de Instagram/Facebook e manda o contato da clínica; não há fechamento nem agendamento ali.\n\n[Andréia] Acredito que incorporar o WhatsApp seria bom, porque o público latino vive no WhatsApp. Hoje é difícil: você liga numa clínica grande com 3–4 atendentes e nem todos são atendidos. Precisamos saber se o investimento vale — pela minha pesquisa não é alto para o tipo de serviço, público e concorrência, porque o Dr. Daniel não concorre com clínicas, concorre com hospitais. Nos EUA, ir a um hospital não sai por menos de US$ 2–3 mil, e muita gente não tem plano de saúde. O sistema, os serviços e o custo de tráfego são completamente diferentes do Brasil — bem mais altos.\n\n[Sobre orçamento] [Andréia] Normalmente diminuo a verba porque em meses passados gastamos mais que o planejado, e não gosto de aumentar sem calcular. Mas se vocês, como especialistas, acharem que devemos aumentar, eu concordo — não é uma clínica de R$ 1.500/mês, é consulta fechada. Com certeza vai abrir, porque o Dr. Daniel quer crescer, já está abrindo outras unidades e quer visibilidade.\n\n[Ana — Meta] Para o conjunto sair do aprendizado, precisa de ~50 conversões/eventos. Com muitos conjuntos e verba baixa, nenhum atinge isso. Importante: depois das últimas atualizações (pós-Andromeda), o aprendizado está concentrado no conjunto de anúncios. Toda vez que se desativa a campanha e cria outra, começa tudo do zero. Trocar criativo dentro do conjunto aproveita o aprendizado que já existe. A ideia é ter menos campanhas e mais anúncios, duplicar conjuntos que performam bem, e organizar isso porque mais serviços vão entrar.\n\n[Ana — Google] Dá pra aproveitar mais, principalmente o Google. Nos termos, a marca institucional (\"Dr. Daniel\") já tem volume relevante — a região já conhece. Mas esses termos estão no mesmo grupo dos demais. Recomendo separar em: campanha institucional, campanha voltada às comunidades/idiomas, e campanha de concorrentes. Criar estrutura dedicada para a marca (termos \"martelados\", termos de concorrentes) para entender as buscas frequentes e aproveitar tudo.\n\n[Ana] Idioma: o público também busca em espanhol e português, não só inglês. Vamos colocar esses termos para teste e analisar. Na descrição, deixar evidente que é clínica especialista, premium — se a pessoa busca \"barato\", ela não é o nosso alvo; caprichar na descrição dos diferenciais antes mesmo do clique.\n\n[Ana] Dispositivo: 86% do tráfego vem de celular. Então o novo site precisa nascer otimizado para mobile e com boa velocidade. De nada adianta o melhor anúncio se o site demora a carregar. A auditoria de velocidade/usabilidade mobile será feita internamente, já dentro dos padrões do site novo.\n\n[Ana] Conversão: como falei, a métrica parece considerar visualização de página em vez de clique — por isso os 100%. Vamos olhar com atenção; há vazamento ali.\n\n[Ana] Remarketing: criar uma campanha dedicada, separada, para recuperar quem clicou (Meta/Google) e não fechou, sempre relembrando marca e diferenciais. Nos EUA, remarketing costuma sair 40–50% mais barato que aquisição fria — é uma das principais oportunidades de otimizar sem depender de aumento de verba.\n\n[Ana] Negativação de termos: senti falta disso. Negativar tudo que é \"clínica barata\"/promoção (não é o posicionamento), serviços que não existem (ex.: pediatria/infantil) e concorrentes irrelevantes. Levantar as listas negativas com o Dr. Daniel/Michelle. Para concorrentes que fazem sentido (hospitais), criar campanha específica com descrição própria, já que o público vê a clínica como alternativa ao hospital.\n\n[Ana] Público brasileiro: vale incluir — há cerca de 20 mil brasileiros em Houston, e brasileiros gostam de atendimento brasileiro. Usar a equipe que fala português na clínica para uma comunicação mais direta.\n\n[Ana] Componentes/comunidades locais: interessante conversar com alguém do atendimento local (a Andréia tem contato) para entender percepções e definir o que é concorrente de fato. Campanhas de concorrente terão verba mais limitada (mais sobre reconhecimento de marca); se a conversão for positiva, aumenta gradualmente.\n\n[Ana — funil] Trouxe um funil de estimativas por etapa. Dá pra otimizar tráfego, mas o ponto crítico é o fechamento. As três últimas etapas (resposta, agendamento, comparecimento) dependem do time interno. Precisamos acompanhar o SLA atual — hoje a resposta demora horas, às vezes mais de 24h, agravado pela diferença de fuso Brasil–Houston (horário de almoço, manhã etc.). Vamos levar isso à clínica para melhorar as respostas, seja por CRM, agendamento ou atendimento. Se o serviço falhar, dá pra mudar o objetivo da campanha (ex.: de conversão para chamada). O PMax teve bons resultados de distribuição em várias mídias — mas só se o atendimento suportar o volume.\n\n[Ana/Andréia — atendimento] Vale um número dedicado às campanhas de Google, com uma pessoa responsável para ninguém ficar sem resposta. WhatsApp facilita muito a conversa (é mais fácil que ligação). O americano usa mais ligação e texto; o latino, WhatsApp. Precisamos integrar tudo no atendimento. Chamada automatizada foi cogitada, mas exige estrutura muito boa — agendamento médico é demorado (muitas dúvidas, segurança), então não pode clicar e não ter ninguém.\n\n[Ana — segmentação] Rever a segmentação geográfica para incluir localidades próximas com grande diversidade latina, respeitando a distância que a pessoa aceita viajar. Wellness e estética entram agora: público diferente (mais jovem, mais mulher), então não faz sentido no mesmo conjunto de veias/coração. Precisam de landing page própria (LP diferente para cardiologia vs. wellness). Estruturar campanhas específicas por serviço dentro do departamento geral.\n\n[Ana] Idiomas nas campanhas: além do espanhol, incluir português nos termos para teste. Testar campanha no WhatsApp em até 7 dias, se a pessoa da clínica tiver disponibilidade. Criar grupos/comunidades separados por termos temáticos, dentro da estrutura combinada.\n\n[Ana] Extensões: priorizar extensões de anúncio (localização, site) antes da extensão de chamada. A chamada fica em espera até validar que o atendimento interno funciona, para só então conectar e mostrar \"atendido\".\n\n[Encerramento — feedback] [Andréia] Agradeço demais. Sou mais eu nessa parte de conteúdo, estratégia e atendimento; tenho uma pessoa que me ajuda, mas não sou especialista em gestão/análise de tráfego. Vem alguém de fora e enxerga melhorias — é ótimo, inclusive pro meu crescimento. [Foco] A proposta é apoio, não competição: vocês estão à frente, entramos como base para trazer insights, de forma prática, acompanhando a efetividade dos testes juntos (o que funcionou, o que não, o que testar de novo). Foi uma consultoria riquíssima.\n\n[Próximos passos] Vamos disponibilizar o material no grupo e incluir a Michelle para o alinhamento de atendimento e pesquisa (ela será o ponto de atendimento mais fácil, dado o idioma/acesso na clínica). Precisamos definir o acesso da Michelle à agenda/sistema para agendamento e coleta de dados de origem. Andréia envia o link para a Ana validar os termos discutidos. Dúvidas seguem pelo grupo. Ana enviará a transcrição da reunião. Obrigada a todos pela participação.";
+</script>
 </body>
 </html>
